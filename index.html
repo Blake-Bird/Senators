@@ -57,7 +57,7 @@
     .card{padding:18px}
   }
 
-  /* Inputs – keep font-size >= 16 to prevent iOS zoom */
+  /* Inputs */
   label{display:block; font-size:12px; font-weight:800; color:#413a6b; margin:4px 0 6px 2px; letter-spacing:.15px}
   input,select{
     width:100%; background:#fff; color:var(--ink);
@@ -65,6 +65,7 @@
     outline:none; font-size:16px;
     transition:border .12s, box-shadow .12s, transform .06s, background .2s;
     box-shadow:0 2px 6px rgba(17,16,36,.06);
+    appearance:auto; -webkit-appearance:auto;
   }
   input:focus,select:focus{border-color:#BFA6FF; box-shadow:0 6px 18px rgba(51,0,114,.15), 0 0 0 5px var(--focus)}
   select{background-image:linear-gradient(to bottom right,#faf9ff,#fff)}
@@ -85,7 +86,7 @@
   .taginput{flex:1; min-width:200px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none; font-size:16px}
 
   /* Ranker */
-  .rank{display:grid; gap:12px; margin-top:4px; touch-action:manipulation;}
+  .rank{display:grid; gap:12px; margin-top:4px; position:relative; touch-action:manipulation;}
   .item{display:flex; align-items:center; justify-content:space-between;
     background:#FFFFFF; border:1px dashed #D7D1EE; padding:14px 14px; border-radius:12px;
     cursor:grab; transition:transform .12s, box-shadow .12s; box-shadow:0 1px 5px rgba(17,16,36,.04)}
@@ -135,7 +136,9 @@
         <div class="grid cols-2">
           <div class="sb">
             <label>Your @highpoint.edu Email *</label>
-            <select id="emailSelect" required></select>
+            <select id="emailSelect" required>
+              <option value="" selected disabled>Select…</option>
+            </select>
           </div>
           <div class="sb">
             <label>Dream Job (1–2 words) *</label>
@@ -146,9 +149,10 @@
         <div>
           <label>Major(s) / Minor(s) *</label>
           <div id="tagbox" class="tagbox">
-            <input id="taginput" class="taginput" placeholder="Type to search HPU programs • Use comma or Enter to add multiple">
+            <input id="taginput" class="taginput" placeholder="Type to search HPU programs • Enter to add multiple" autocomplete="off" list="majors">
           </div>
-          <div class="muted">Remove a program with ×.</div>
+          <datalist id="majors"></datalist>
+          <div class="muted">Enter adds the highlighted item. Remove a program with ×.</div>
         </div>
       </section>
 
@@ -212,7 +216,7 @@
       <!-- RANKER -->
       <section style="margin-top:12px">
         <h2>Rank event lanes (drag → top is #1)</h2>
-        <div id="rank" class="rank reveal">
+        <div id="rank" class="rank reveal on">
           <div class="item" data-id="Social & Experiences"><div>Social & Experiences</div><span class="drag">Drag</span></div>
           <div class="item" data-id="Wellness & Growth"><div>Wellness & Growth</div><span class="drag">Drag</span></div>
           <div class="item" data-id="Service & Philanthropy"><div>Service & Philanthropy</div><span class="drag">Drag</span></div>
@@ -248,55 +252,46 @@ const SENATORS = [
   ["Toni VanScott","tvanscot@highpoint.edu"],["Lelia Porter","lporter2@highpoint.edu"]
 ];
 
-/* PROGRAM WHITELIST (degree tags stripped; duplicates removed) */
+/* PROGRAM WHITELIST (labels from your screenshots; BA/BS/Minor dropped) */
 const RAW_PROGRAMS = [
-  "Accounting","Accounting Minor","Actuarial Science","Business Administration",
-  "Business Administration Minor","Business Analytics & Economics","Economics Minor",
-  "Entrepreneurship","Entrepreneurship Minor","Finance","Finance Minor",
-  "Healthcare Management","Healthcare Management Minor","Hospitality Management",
-  "Hospitality Management Minor","International Business","Marketing","Marketing Minor",
-  "Sales","Sales Minor","Global Commerce Minor","Operations & Supply Chain Management Minor",
-  "Event Management","Event Management Minor","Fashion Merchandising","Fashion Merchandising Minor",
-  "Furnishings Minor","Sports Management","Sports Management Minor","Sports Media","Sports Media Minor",
-  "Biochemistry","Biology","Biology Minor","Chemistry","Chemistry Minor",
-  "Computer Engineering","Computer Science","Computer Science Minor",
-  "Cybersecurity","Data Analytics & Statistics","Data Analytics Minor",
-  "Data Science","Data Science Minor","Electrical Engineering","Exercise Science",
-  "Mathematical Economics","Mathematics","Mathematics Minor","Mechanical Engineering",
-  "Mechatronics","Neuroscience","Neuroscience Minor","Physics","Physics Minor","Statistics Minor",
-  "Advertising, Public Relations, and Strategic Communication",
-  "Art History Minor","Creative Writing Minor","Graphic Design Minor",
-  "Journalism","Journalism Minor","Media Production","Media Production Minor",
-  "Photography Minor","Public & Professional Writing Minor","Social Media and Digital Communication",
-  "Social Media and Digital Communication Minor","Studio Art","Studio Art Minor",
-  "Studio Art — General Fine Arts (BFA)","Studio Art — Graphic Design (BFA)","Theater","Theater Minor",
-  "Chinese Minor","Criminal Justice","Criminal Justice Minor","East Asian Studies Minor",
-  "Education Studies Minor","English","French & Francophone Studies",
-  "French & Francophone Studies Minor","History","History Minor",
-  "International Relations","Italian Studies Minor","Jewish Studies Minor",
-  "Leadership Studies Minor","Legal Studies Minor","Literature Minor",
-  "Philosophy","Philosophy Minor","Political Science","Political Science Minor",
-  "Popular Culture Studies Minor","Religion","Religion Minor","Sociology & Anthropology",
-  "Sociology & Anthropology Minor","Spanish","Spanish Minor","Social Innovation Minor",
-  "Women’s Leadership Development Minor",
-  "Athletic Coaching Minor","Elementary Education","Health and Physical Education",
-  "Health and Wellness","Health Education Minor","Pre-Dental Program",
-  "Pre-Nursing Program","Pre-Pharmacy Program",
-  "Design Studies — Graphic Design (BA)","Interior Design","Visual Merchandising Design Minor"
+  "Accounting","Actuarial Science","Advertising, Public Relations, and Strategic Communication",
+  "Art History","Athletic Coaching","Biochemistry","Biology","Business Administration",
+  "Business Analytics & Economics","Chemistry","Chinese","Computer Engineering","Computer Science",
+  "Creative Writing","Criminal Justice","Cybersecurity","Dance","Data Analytics & Statistics",
+  "Data Analytics","Data Science","Design Studies — Graphic Design","Doctor of Dental Medicine",
+  "Doctor of Educational Leadership","Doctor of Medical Science","Doctor of Pharmacy","Doctor of Physical Therapy",
+  "East Asian Studies","Economics","Education Studies","Electrical Engineering","Elementary Education",
+  "English","Entrepreneurship","Environmental Studies","Event Management","Exercise Science",
+  "Fashion Merchandising","Finance","Forensic Studies","French & Francophone Studies","Furnishings",
+  "Game Design","Global Commerce","Graphic Design","Health and Physical Education","Health and Wellness",
+  "Health Education","Healthcare Management","History","Hospitality Management","Human Resource Management",
+  "Interior Design","International Business","International Relations","Italian Studies","Jewish Studies",
+  "Journalism","Juris Doctor","Latin American and Caribbean Studies","Leadership Studies","Legal Studies",
+  "Literature","Marketing","Master of Arts in Communication & Business Leadership","MBA",
+  "MBA — Business Analytics","MBA — Healthcare Management","MBA — Supply Chain Management",
+  "Master of Education — Elementary","Master of Education — Leadership","Master of Education — Special Education",
+  "Master of Healthcare Administration","Master of Physician Assistant Studies","MS in Athletic Training",
+  "MS in Biomedical Sciences","Mathematical Economics","Mathematics","Mechanical Engineering","Mechatronics",
+  "Media Production","Middle Grades Education","Museum Studies","Music","Music in Instrumental",
+  "Music in Piano or Organ","Music in Voice","Musical Theater","Neuroscience",
+  "Operations and Supply Chain Management","Philosophy","Photography","Physics","Political Science",
+  "Popular Culture Studies","Pre-Dental Program","Pre-Nursing Program","Pre-Pharmacy Program",
+  "Psychology","Public & Professional Writing","Religion","Sales","Social Innovation",
+  "Social Media and Digital Communication","Sociology & Anthropology","Spanish","Special Education",
+  "Sport Management","Sports Media","Statistics","Strategic Communication","Studio Art",
+  "Studio Art — General Fine Arts (BFA)","Studio Art — Graphic Design (BFA)","Theater",
+  "Visual Merchandising Design","Women’s Leadership Development"
 ];
 
-const MAJORS = RAW_PROGRAMS
-  .map(t => String(t)
-    .replace(/\s*\((?:B\.?A\.?|B\.?S\.?|B\.?F\.?A\.?|M\.?B\.?A\.?|M\.?Ed\.?|J\.?D\.?|DPT|PharmD|DMSc|MPAS|MSAT|BMS)\)\s*/gi,'')
+/* Build unified MAJORS list (dedup/lowercase-insensitive, sorted) */
+const MAJORS = Array.from(new Set(RAW_PROGRAMS.map(t =>
+  String(t)
+    .replace(/\s*\((?:B\.?A\.?|B\.?S\.?|B\.?F\.?A\.?)\)\s*/gi,'')
     .replace(/\s*Minor$/i,'')
-    .replace(/\s*Program$/i,'')
-    .replace(/\s*with a Concentration.*$/i,'')
     .replace(/\s*&/g,' & ')
     .replace(/\s{2,}/g,' ')
     .trim()
-  ))
-  .filter((v,i,arr)=> v && arr.indexOf(v)===i)
-  .sort((a,b)=>a.localeCompare(b));
+))).sort((a,b)=>a.localeCompare(b));
 
 /* Parallax (desktop only) */
 const band=document.getElementById('band'), s1=document.getElementById('s1'), s2=document.getElementById('s2');
@@ -307,15 +302,35 @@ if(window.matchMedia("(min-width: 801px)").matches){
 /* Ensure card reveals */
 document.querySelectorAll('.reveal,.card').forEach(el=>el.classList.add('on'));
 
+/* Prevent Enter from submitting unless on the button */
+document.getElementById('form').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' && !(e.target.tagName === 'TEXTAREA')) {
+    // Allow Enter inside taginput to add a tag (handled below). Else, stop submit.
+    if(e.target.id !== 'taginput') e.preventDefault();
+  }
+});
+
 /* Email dropdown */
 const emailSelect=document.getElementById('emailSelect');
-emailSelect.appendChild(new Option('Select…',''));
 SENATORS.slice().sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,email])=>{
-  emailSelect.appendChild(new Option(`${name} — ${email}`, email));
+  const opt = new Option(`${name} — ${email}`, email);
+  emailSelect.appendChild(opt);
 });
 
 /* Majors whitelist + tag pills */
-const tagbox=document.getElementById('tagbox'); const taginput=document.getElementById('taginput'); let tags=[];
+const tagbox=document.getElementById('tagbox');
+const taginput=document.getElementById('taginput');
+const datalist=document.getElementById('majors');
+let tags=[];
+
+function renderDatalist(q=""){
+  datalist.innerHTML="";
+  const lc=q.toLowerCase();
+  MAJORS.filter(m=>m.toLowerCase().includes(lc)).slice(0,50).forEach(m=>{
+    const o=document.createElement('option'); o.value=m; datalist.appendChild(o);
+  });
+}
+
 function renderTags(){
   tagbox.querySelectorAll('.tag').forEach(n=>n.remove());
   tags.forEach(t=>{
@@ -325,30 +340,54 @@ function renderTags(){
     el.appendChild(x); tagbox.insertBefore(el, taginput);
   });
 }
-taginput.setAttribute('list','majors');
-const dl=document.createElement('datalist'); dl.id='majors';
-MAJORS.forEach(m=>{const o=document.createElement('option'); o.value=m; dl.appendChild(o)});
-document.body.appendChild(dl);
+
+function closestSingleMatch(v){
+  const q=v.trim().toLowerCase();
+  const matches = MAJORS.filter(m=>m.toLowerCase().includes(q));
+  return matches.length===1 ? matches[0] : null;
+}
 
 function addMajor(val){
-  const v=(val||"").trim(); if(!v) return;
-  if(!MAJORS.includes(v)){ toastErr("Choose from the HPU list."); taginput.value=""; return; }
-  if(!tags.includes(v)) tags.push(v); taginput.value=""; renderTags();
+  let v=(val||"").trim();
+  if(!v) return;
+  // Auto-complete to the unique match if user typed a fragment
+  const single = closestSingleMatch(v);
+  if(single) v = single;
+
+  // Require from list (case-insensitive)
+  const ok = MAJORS.some(m=>m.toLowerCase()===v.toLowerCase());
+  if(!ok){ toastErr("Choose from the HPU list."); taginput.value=""; renderDatalist(""); return; }
+
+  // Normalize to canonical case
+  v = MAJORS.find(m=>m.toLowerCase()===v.toLowerCase());
+  if(!tags.includes(v)) tags.push(v);
+  taginput.value=""; renderTags(); renderDatalist("");
 }
-taginput.addEventListener('keydown',e=>{
-  if(e.key==='Enter'||e.key===','){ e.preventDefault(); addMajor(taginput.value.replace(',','')); }
+
+renderDatalist("");
+
+taginput.addEventListener('input', (e)=>{ renderDatalist(e.target.value); });
+
+// Enter or comma adds; change (choosing from datalist) also adds
+taginput.addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' || e.key===','){
+    e.preventDefault();
+    const raw = taginput.value.replace(',','');
+    addMajor(raw);
+  }
 });
-taginput.addEventListener('blur',()=>addMajor(taginput.value));
+taginput.addEventListener('change', ()=> addMajor(taginput.value));
+taginput.addEventListener('blur', ()=> addMajor(taginput.value));
 
 /* Ranker – touch + mouse */
 const rank = document.getElementById('rank');
 function currentRanking(){ return Array.from(rank.querySelectorAll('.item')).map(i=>i.dataset.id); }
 function bindDraggable(row){
-  let startY, startX, startTop, placeholder, dragging=false;
+  let startY, startTop, placeholder, dragging=false;
 
   function pointerDown(e){
     const t = e.touches ? e.touches[0] : e;
-    startY = t.clientY; startX = t.clientX;
+    startY = t.clientY;
     startTop = row.getBoundingClientRect().top + window.scrollY;
     placeholder = document.createElement('div');
     placeholder.className = 'item'; placeholder.style.visibility='hidden';
