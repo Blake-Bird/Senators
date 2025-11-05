@@ -1,312 +1,348 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SGA Senators — Role & Group Intake (Even-Date Mondays @ 8 PM)</title>
-  <meta name="color-scheme" content="light">
-  <style>
-    :root{
-      --hpu-purple:#4B2E83;
-      --hpu-purple-2:#3c236a;
-      --hpu-gold:#C9B37E;
-      --ink:#121212;
-      --bg:#f7f7fb;
-      --card:#ffffff;
-      --ok:#1aa06d;
-      --warn:#e89c2b;
-      --err:#cc3a3a;
-      --shadow:0 10px 30px rgba(0,0,0,.12);
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;background:linear-gradient(135deg,var(--hpu-purple),var(--hpu-purple-2));
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;
-      color:#111; display:flex; align-items:center; justify-content:center; padding:24px;
-    }
-    .shell{
-      width:min(980px,100%);
-    }
-    .brand{
-      display:flex; gap:16px; align-items:center; color:#fff; margin-bottom:18px;
-    }
-    .crest{
-      width:44px; height:44px; border-radius:12px;
-      background:conic-gradient(from 0deg at 50% 50%, var(--hpu-gold), #fff, var(--hpu-gold));
-      box-shadow:0 6px 20px rgba(0,0,0,.2); position:relative; overflow:hidden;
-    }
-    .crest:after{
-      content:"HPU"; position:absolute; inset:0; display:grid; place-items:center;
-      font-weight:800; letter-spacing:.5px; color:var(--hpu-purple);
-      background:rgba(255,255,255,.12); backdrop-filter:saturate(160%) blur(4px);
-      font-size:14px;
-    }
-    .title{font-size:20px; font-weight:800; letter-spacing:.3px}
-    .card{
-      background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
-      padding:20px; display:grid; gap:18px;
-      animation:pop .5s ease-out both;
-    }
-    @keyframes pop{from{transform:translateY(10px); opacity:0} to{transform:translateY(0); opacity:1}}
-    h2{margin:0 0 4px 0; font-size:18px; color:var(--hpu-purple)}
-    p.note{margin:0; font-size:13px; color:#555}
-    .grid{display:grid; gap:12px}
-    .grid.cols-2{grid-template-columns:1fr 1fr}
-    label{display:block; font-size:13px; color:#333; margin-bottom:6px; font-weight:600}
-    input,select{
-      width:100%; padding:12px 14px; border-radius:12px; border:1px solid #e5e5ef; background:#fff;
-      outline:none; transition:border .15s, box-shadow .15s; font-size:14px;
-    }
-    input:focus,select:focus{border-color:var(--hpu-purple); box-shadow:0 0 0 4px rgba(75,46,131,.12)}
-    .actions{display:flex; gap:12px; align-items:center; justify-content:flex-end; margin-top:6px}
-    button{
-      appearance:none; border:0; padding:12px 16px; border-radius:12px; font-weight:700; cursor:pointer;
-      background:linear-gradient(135deg,var(--hpu-purple),var(--hpu-purple-2)); color:#fff; box-shadow:var(--shadow);
-      transition:transform .06s ease-in-out, filter .2s;
-    }
-    button:hover{filter:saturate(115%) brightness(1.02)}
-    button:active{transform:translateY(1px)}
-    .chip{display:inline-flex; align-items:center; gap:8px; font-size:12px; padding:8px 10px;
-      border-radius:999px; background:#f2eefc; color:var(--hpu-purple); font-weight:700}
-    .hide{display:none!important}
-    .success, .error{
-      border-radius:14px; padding:12px 14px; font-size:14px; line-height:1.3;
-    }
-    .success{background:#e8f7f0; color:#0c5f42}
-    .error{background:#fdeeee; color:#7a1f1f}
-    .footer-note{color:#eee; font-size:12px; margin-top:12px; text-align:center}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SGA Senators — Role & Group Intake</title>
+<meta name="color-scheme" content="light">
+<style>
+  :root{
+    --purple:#4B2E83; --purple2:#372162; --ink:#0f0f14; --bg:#0b0a12;
+    --card:#111022; --sub:#b9b3d6; --gold:#C9B37E; --ok:#19a574; --warn:#e8a23a; --err:#e04d4d;
+    --glass:rgba(255,255,255,0.06); --stroke:rgba(255,255,255,0.12);
+    --shadow:0 20px 60px rgba(0,0,0,.45); --radius:18px;
+  }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{
+    margin:0; background:
+      radial-gradient(1200px 800px at 20% -10%, #6d54bf22 0%, transparent 60%),
+      radial-gradient(900px 700px at 110% 30%, #7a4fbf22 0%, transparent 60%),
+      linear-gradient(180deg,#0b0a12,#0d0c16 35%, #131127 100%);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    color:#eceaff; line-height:1.35;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:28px 20px 80px}
+  .hero{display:flex; align-items:center; gap:16px; margin-bottom:18px}
+  .crest{
+    width:50px; height:50px; border-radius:14px; position:relative;
+    background:conic-gradient(from 180deg, var(--gold), #fff, var(--gold));
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+  }
+  .crest:after{
+    content:"HPU"; position:absolute; inset:0; display:grid; place-items:center;
+    font-weight:900; letter-spacing:.6px; color:var(--purple);
+    background:linear-gradient(180deg, #ffffff55, #ffffff10);
+    border-radius:14px; font-size:13px;
+  }
+  h1{margin:0; font-size:22px; font-weight:900}
+  .chip{display:inline-flex; gap:8px; align-items:center; font-size:12px; font-weight:800;
+        background:#2a2450; color:#d9d4ff; padding:8px 12px; border:1px solid #3b3369; border-radius:999px}
+  .card{
+    background:linear-gradient(180deg, #171532, #121028); border:1px solid var(--stroke);
+    border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin-top:16px;
+  }
+  .section{margin-top:4px}
+  h2{margin:0 0 6px 0; color:#dcd8ff; font-size:16px; letter-spacing:.2px}
+  p.note{margin:0 0 12px 0; color:#c9c6e6; font-size:13px}
+  .grid{display:grid; gap:12px}
+  .cols-2{grid-template-columns:1fr 1fr}
+  label{display:block; font-size:12px; color:#dcd8ff; margin:4px 0 6px 2px; font-weight:700; letter-spacing:.2px}
+  input,select,textarea{
+    width:100%; background:#0f0d21; color:#f5f2ff; border:1px solid #2f2957; border-radius:12px;
+    padding:12px 14px; outline:none; transition:border .12s, box-shadow .12s; font-size:14px;
+  }
+  input:focus,select:focus,textarea:focus{border-color:#6552bf; box-shadow:0 0 0 4px #6e59ff30}
+  .muted{color:#a9a5c7}
+  .row{display:flex; gap:12px; align-items:center}
+  .actions{display:flex; justify-content:flex-end; margin-top:6px}
+  button{
+    appearance:none; border:0; background:
+      radial-gradient(120% 180% at -10% -50%, #9a7bff55, transparent),
+      linear-gradient(135deg, #6d59d7, #4B2E83 60%, #372162);
+    color:white; font-weight:900; letter-spacing:.2px; padding:13px 18px; border-radius:12px;
+    box-shadow:0 10px 30px rgba(62,38,130,.45);
+    transition:transform .06s ease, filter .2s; cursor:pointer;
+  }
+  button:hover{filter:brightness(1.05) saturate(1.1)}
+  button:active{transform:translateY(1px)}
+  .pill{display:inline-flex; gap:8px; align-items:center; padding:8px 10px; border-radius:999px;
+        background:#0f0d21; border:1px solid #2e2955; color:#c8c4ea; font-size:12px; font-weight:700}
+  .ok{background:#0f2019; border-color:#1b6d51; color:#8be0c2}
+  .warn{background:#211a0f; border-color:#8d6422; color:#f1c37a}
+  .err{background:#251214; border-color:#a03743; color:#ffb6bf}
+  .hide{display:none!important}
+  /* tags */
+  .tagbox{display:flex; flex-wrap:wrap; gap:8px; padding:8px; min-height:48px;
+          background:#0f0d21; border:1px solid #2f2957; border-radius:12px}
+  .tag{background:#2c2654; color:#efeaff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
+  .tag button{background:transparent; border:0; color:#bdb7f6; margin-left:6px; cursor:pointer}
+  .taginput{flex:1; min-width:180px; background:transparent; border:0; color:#eee; padding:6px 8px; outline:none}
+  /* ranker */
+  .rank{display:grid; gap:8px}
+  .rank .item{display:flex; align-items:center; justify-content:space-between;
+              background:#0f0d21; border:1px dashed #3b3369; padding:10px 12px; border-radius:12px; cursor:grab}
+  .item .label{display:flex; gap:10px; align-items:center}
+  .drag-hint{font-size:11px; color:#9f9ad0; margin:4px 0 0 2px}
+  /* reveal */
+  .reveal{opacity:0; transform:translateY(12px); transition:all .5s cubic-bezier(.2,.6,.2,1)}
+  .reveal.on{opacity:1; transform:none}
+</style>
 </head>
 <body>
-  <div class="shell">
-    <div class="brand"><div class="crest"></div>
+  <div class="wrap">
+    <div class="hero reveal">
+      <div class="crest"></div>
       <div>
-        <div class="title">SGA Senators — Role & Group Intake</div>
+        <h1>SGA Senators — Role &amp; Group Intake</h1>
         <div class="chip">Even-date Mondays • 8:00 PM • Cottrell</div>
       </div>
     </div>
 
-    <form id="form" class="card" novalidate>
-      <section>
+    <form id="form" class="card reveal" novalidate>
+      <div class="section">
         <h2>Basics</h2>
         <p class="note">We meet every Monday whose calendar date is even (e.g., Nov&nbsp;10, Nov&nbsp;24). If you can’t attend, email <b>2029VP@highpoint.edu</b> ≥3 days prior.</p>
+
         <div class="grid cols-2">
           <div>
-            <label for="name">Full Name *</label>
-            <input id="name" name="name" required placeholder="First Last" />
+            <label>Full Name *</label>
+            <input id="name" required placeholder="First Last">
           </div>
           <div>
-            <label for="phone">Phone Number *</label>
-            <input id="phone" name="phone" inputmode="tel" required placeholder="(###) ###-####" />
+            <label>Phone Number *</label>
+            <input id="phone" inputmode="tel" required placeholder="(###) ###-####">
           </div>
         </div>
 
         <div class="grid cols-2">
           <div>
-            <label for="emailSelect">Your @highpoint.edu Email (select) *</label>
-            <select id="emailSelect" name="emailSelect" required></select>
+            <label>Your @highpoint.edu Email (select) *</label>
+            <select id="emailSelect" required></select>
           </div>
           <div>
-            <label for="email">or type your @highpoint.edu Email *</label>
-            <input id="email" name="email" placeholder="netid@highpoint.edu" />
+            <label>Dream Job (1–2 words) *</label>
+            <input id="dream" required list="dreams" placeholder="Lawyer, Doctor, Teacher, Quant, Founder">
+            <datalist id="dreams">
+              <option>Lawyer</option><option>Doctor</option><option>Teacher</option><option>Engineer</option>
+              <option>Software</option><option>Quant</option><option>Founder</option><option>Consultant</option>
+              <option>Designer</option><option>Filmmaker</option><option>Journalist</option><option>Producer</option>
+            </datalist>
           </div>
         </div>
 
+        <div>
+          <label>Major(s) / Minor(s) *</label>
+          <div id="tagbox" class="tagbox">
+            <input id="taginput" class="taginput" placeholder="Type and press Enter (e.g., Finance)">
+          </div>
+          <div class="drag-hint">Tip: we’ll auto-recognize common HPU majors, but you can add anything. Misspellings are okay.</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Attendance & Acknowledgment</h2>
         <div class="grid cols-2">
           <div>
-            <label for="majors">Major(s) / Minor(s) *</label>
-            <input id="majors" name="majors" required placeholder="Finance, Data Analytics" />
-          </div>
-          <div>
-            <label for="dream">Dream Job (1–2 words) *</label>
-            <input id="dream" name="dream" required placeholder="Lawyer, Quant, Founder" />
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Attendance</h2>
-        <div class="grid">
-          <div>
-            <label for="attendance">Policy (Even-date Mondays @ 8 PM at Cottrell) *</label>
-            <select id="attendance" name="attendance" required>
+            <label>Policy (Even-date Mondays @ 8 PM at Cottrell) *</label>
+            <select id="attendance" required>
               <option value="">Select…</option>
               <option>✅ I can attend (mandatory)</option>
               <option>⚠️ I’ll email 2029VP@highpoint.edu ≥3 days before if I can’t</option>
               <option>🚫 I can’t attend (follow-up needed)</option>
             </select>
           </div>
+          <div>
+            <label>Signature — type your initials to acknowledge penalties *</label>
+            <input id="signature" required placeholder="BB">
+          </div>
         </div>
-      </section>
+        <div class="row">
+          <input id="ack" type="checkbox" required>
+          <label for="ack" class="muted">I acknowledge that unexcused absences may result in consequences; repeated excuses escalate.</label>
+        </div>
+      </div>
 
-      <section>
+      <div class="section">
         <h2>Three Fast Signals</h2>
         <div class="grid cols-2">
           <div>
-            <label for="superpower">Pick your everyday superpower *</label>
+            <label>Pick your everyday superpower *</label>
             <select id="superpower" required>
               <option value="">Select…</option>
-              <option>Invisibility</option>
-              <option>Super speed</option>
-              <option>Telepathy</option>
-              <option>Time freeze</option>
-              <option>Shape-shift</option>
+              <option>Invisibility</option><option>Super speed</option><option>Telepathy</option>
+              <option>Time freeze</option><option>Shape-shift</option>
             </select>
           </div>
           <div>
-            <label for="music">Pick your music taste *</label>
+            <label>Pick your music taste *</label>
             <select id="music" required>
               <option value="">Select…</option>
-              <option>2010s Pop Girl</option>
-              <option>Rap / Trap</option>
-              <option>Oldies / Classic Rock</option>
-              <option>Country</option>
-              <option>EDM / House</option>
-              <option>Classical/Jazz</option>
+              <option>2010s Pop Girl</option><option>Rap / Trap</option><option>Oldies / Classic Rock</option>
+              <option>Country</option><option>EDM / House</option><option>Classical/Jazz</option>
             </select>
           </div>
         </div>
-
-        <div class="grid">
-          <div>
-            <label for="firstApp">When you start something, what do you actually open first? *</label>
-            <select id="firstApp" required>
-              <option value="">Select…</option>
-              <option>Messages / DMs</option>
-              <option>Instagram / TikTok</option>
-              <option>AI (ChatGPT, etc.)</option>
-              <option>Calendar</option>
-              <option>Starbucks App</option>
-            </select>
-          </div>
+        <div>
+          <label>When you start something, what do you actually open first? *</label>
+          <select id="firstApp" required>
+            <option value="">Select…</option>
+            <option>Messages / DMs</option><option>Instagram / TikTok</option><option>AI (ChatGPT, etc.)</option>
+            <option>Calendar</option><option>Starbucks App</option>
+          </select>
         </div>
-      </section>
+      </div>
 
-      <section>
-        <h2>Event Lanes (preference)</h2>
-        <div class="grid cols-2">
-          <div>
-            <label for="laneTop">Top event lane *</label>
-            <select id="laneTop" required>
-              <option value="">Select…</option>
-              <option>Social & Experiences</option>
-              <option>Wellness & Growth</option>
-              <option>Service & Philanthropy</option>
-              <option>Academic & Career</option>
-              <option>Culture & Traditions</option>
-            </select>
-          </div>
-          <div>
-            <label for="laneSecond">Second choice *</label>
-            <select id="laneSecond" required>
-              <option value="">Select…</option>
-              <option>Social & Experiences</option>
-              <option>Wellness & Growth</option>
-              <option>Service & Philanthropy</option>
-              <option>Academic & Career</option>
-              <option>Culture & Traditions</option>
-            </select>
-          </div>
+      <div class="section">
+        <h2>Rank your event lanes (drag to reorder)</h2>
+        <p class="note">Top = your #1. We use this as a tiebreaker only; roles are assigned by the system.</p>
+        <div id="rank" class="rank">
+          <div class="item" draggable="true"><div class="label">Social &amp; Experiences</div> <span class="pill">Drag</span></div>
+          <div class="item" draggable="true"><div class="label">Wellness &amp; Growth</div> <span class="pill">Drag</span></div>
+          <div class="item" draggable="true"><div class="label">Service &amp; Philanthropy</div> <span class="pill">Drag</span></div>
+          <div class="item" draggable="true"><div class="label">Academic &amp; Career</div> <span class="pill">Drag</span></div>
+          <div class="item" draggable="true"><div class="label">Culture &amp; Traditions</div> <span class="pill">Drag</span></div>
         </div>
-      </section>
+        <div class="drag-hint">Drag each card. We store the full 1→5 order.</div>
+      </div>
 
-      <div id="msg" class="success hide"></div>
-      <div id="err" class="error hide"></div>
+      <div id="msg" class="pill ok hide"></div>
+      <div id="err" class="pill err hide"></div>
 
       <div class="actions">
         <button type="submit">Submit</button>
       </div>
     </form>
-
-    <div class="footer-note">High Point University • Student Government • ©</div>
   </div>
 
-  <script>
-    /*** CONFIG ***/
-    const GAS_ENDPOINT = "PUT_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // <-- paste your Web App URL here
+<script>
+/* ===== CONFIG ===== */
+const GAS_ENDPOINT = "PUT_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // <— paste your Web App URL
 
-    // Allowed HPU emails (preload dropdown). You can add/remove freely.
-    const ALLOWED = [
-      "aschult2@highpoint.edu","2029communications@highpoint.edu","abollar@highpoint.edu",
-      "bmendivi@highpoint.edu","2029treasurer@highpoint.edu","ckraras@highpoint.edu",
-      "2029president@highpoint.edu","evanzego@highpoint.edu","eravenel@highpoint.edu",
-      "espurrie@highpoint.edu","gllopis@highpoint.edu","hdaly1@highpoint.edu",
-      "jkrumpe@highpoint.edu","jpace@highpoint.edu","kkincai2@highpoint.edu",
-      "mreinharr@highpoint.edu","ncastro@highpoint.edu","2029events@highpoint.edu",
-      "2029vp@highpoint.edu","tshah1@highpoint.edu","tvanscot@highpoint.edu",
-      "lporter2@highpoint.edu"
-    ];
+// Email list (dropdown only)
+const ALLOWED_EMAILS = [
+  "aschult2@highpoint.edu","2029communications@highpoint.edu","abollar@highpoint.edu",
+  "bmendivi@highpoint.edu","2029treasurer@highpoint.edu","ckraras@highpoint.edu",
+  "2029president@highpoint.edu","evanzego@highpoint.edu","eravenel@highpoint.edu",
+  "espurrie@highpoint.edu","gllopis@highpoint.edu","hdaly1@highpoint.edu",
+  "jkrumpe@highpoint.edu","jpace@highpoint.edu","kkincai2@highpoint.edu",
+  "mreinharr@highpoint.edu","ncastro@highpoint.edu","2029events@highpoint.edu",
+  "2029vp@highpoint.edu","tshah1@highpoint.edu","tvanscot@highpoint.edu","lporter2@highpoint.edu"
+];
 
-    // Populate dropdown:
-    const sel = document.getElementById("emailSelect");
-    sel.appendChild(new Option("Select…",""));
-    ALLOWED.forEach(e => sel.appendChild(new Option(e,e)));
+// Big, fuzzy major list (quick starter – editable). Spelling variants included.
+const MAJORS = [
+  "Accounting","Actuarial Science","Biochemistry","Biology","Biomedical Engineering","Business Administration",
+  "Chemistry","Civic Leadership","Communication","Computer Science","Creative Writing","Criminology","Data Analytics",
+  "Economics","Education","Electrical Engineering","Entrepreneurship","Exercise Science","Finance","Game Design",
+  "Graphic Design","Health Communication","History","Hospitality Management","Human Relations","International Business",
+  "Interior Design","Journalism","Law & Society","Management","Marketing","Mathematical Economics","Mathematics",
+  "Media Production","Music","Nursing","Philosophy","Physics","Political Science","Psychology","Public Relations",
+  "Sport Management","Statistics","Studio Art","Theatre","Video Production","CS","Comp Sci","CompSci","Math",
+  "Econ","Marketing/Comm","Biz Admin","Finance (FIN)","Bio","Chem","Physics (PHY)","Data Science","MIS","Supply Chain",
+  "Hospitality","Kinesiology","Pre-Med","Pre-Law","Prelaw","Premed","Quant","Quantitative Finance"
+];
 
-    function getEmail() {
-      const typed = (document.getElementById("email").value||"").trim();
-      const picked = (document.getElementById("emailSelect").value||"").trim();
-      // Prefer explicit pick; fallback to typed
-      return picked || typed;
-    }
+/* ===== Fancy reveal on scroll ===== */
+const io = new IntersectionObserver(ents=>{
+  ents.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    function isHPU(email){
-      return /^[a-z0-9._%+-]+@highpoint\.edu$/i.test(email);
-    }
+/* ===== Populate email dropdown ===== */
+const emailSelect = document.getElementById('emailSelect');
+emailSelect.appendChild(new Option("Select…",""));
+ALLOWED_EMAILS.forEach(e=>emailSelect.appendChild(new Option(e,e)));
 
-    const formEl = document.getElementById("form");
-    const msgEl = document.getElementById("msg");
-    const errEl = document.getElementById("err");
+/* ===== Tag (Majors) input: comma or Enter creates a tag; misspellings allowed ===== */
+const tagbox = document.getElementById('tagbox');
+const taginput = document.getElementById('taginput');
+let tags = [];
+function addTag(v){
+  v = v.trim(); if(!v) return;
+  if(!tags.includes(v)){ tags.push(v); renderTags(); }
+  taginput.value = "";
+}
+function removeTag(v){ tags = tags.filter(t=>t!==v); renderTags(); }
+function renderTags(){
+  tagbox.querySelectorAll('.tag').forEach(n=>n.remove());
+  tags.forEach(t=>{
+    const el = document.createElement('span');
+    el.className='tag'; el.textContent=t;
+    const x = document.createElement('button'); x.type='button'; x.textContent='×';
+    x.onclick=()=>removeTag(t);
+    el.appendChild(x);
+    tagbox.insertBefore(el, taginput);
+  });
+}
+taginput.addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' || e.key===',' ){ e.preventDefault(); addTag(taginput.value.replace(',','')); }
+});
+taginput.addEventListener('blur', ()=> addTag(taginput.value));
+taginput.setAttribute('list','majors');
+const dl = document.createElement('datalist'); dl.id='majors';
+MAJORS.forEach(m=>{ const o=document.createElement('option'); o.value=m; dl.appendChild(o); });
+document.body.appendChild(dl);
 
-    formEl.addEventListener("submit", async (e)=>{
-      e.preventDefault(); errEl.classList.add("hide"); msgEl.classList.add("hide");
+/* ===== Ranker (drag to reorder) ===== */
+const rank = document.getElementById('rank');
+let dragEl=null;
+rank.querySelectorAll('.item').forEach(i=>{
+  i.addEventListener('dragstart', ()=>{ dragEl=i; i.style.opacity=.5; });
+  i.addEventListener('dragend', ()=>{ dragEl=null; i.style.opacity=1; });
+  i.addEventListener('dragover', (e)=>{ e.preventDefault(); const t=e.currentTarget;
+    if(t===dragEl) return;
+    const rect=t.getBoundingClientRect(); const before=(e.clientY-rect.top) < rect.height/2;
+    rank.insertBefore(dragEl, before?t:t.nextSibling);
+  });
+});
+function currentRanking(){
+  return Array.from(rank.querySelectorAll('.item')).map(i=>i.querySelector('.label').textContent.trim());
+}
 
-      const payload = {
-        name: val("name"), phone: val("phone"),
-        email: getEmail(),
-        majors: val("majors"), dream: val("dream"),
-        attendance: val("attendance"),
-        superpower: val("superpower"),
-        music: val("music"),
-        firstApp: val("firstApp"),
-        laneTop: val("laneTop"),
-        laneSecond: val("laneSecond")
-      };
+/* ===== Submit ===== */
+const form = document.getElementById('form');
+const msg = document.getElementById('msg');
+const err = document.getElementById('err');
 
-      if(!payload.name || !payload.phone || !payload.majors || !payload.dream ||
-         !payload.attendance || !payload.superpower || !payload.music ||
-         !payload.firstApp || !payload.laneTop || !payload.laneSecond){
-        return showErr("Please complete all required fields.");
-      }
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault(); msg.classList.add('hide'); err.classList.add('hide');
 
-      if(!isHPU(payload.email)) {
-        return showErr("Email must be @highpoint.edu (select from the list or type a valid HPU email).");
-      }
-      // Optional: force that email be from the allowed list:
-      // if(!ALLOWED.includes(payload.email)) return showErr("Please pick your HPU email from the dropdown.");
+  // basic required checks
+  const payload = {
+    name: val('name'), phone: val('phone'),
+    email: emailSelect.value,
+    dream: val('dream'), majors: tags.slice(),
+    attendance: val('attendance'), signature: val('signature'), ack: document.getElementById('ack').checked,
+    superpower: val('superpower'), music: val('music'), firstApp: val('firstApp'),
+    laneRank: currentRanking() // full ordered array
+  };
 
-      try{
-        const r = await fetch(GAS_ENDPOINT, {
-          method:"POST",
-          mode:"no-cors", // Apps Script web app will accept this; response body not accessible but write succeeds
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify(payload)
-        });
-        showMsg("Thanks! Your response was saved. You’ll see your role & group via the results sheet and email summary.");
-        formEl.reset();
-        // keep dropdown default as "Select…"
-        sel.value="";
-      }catch(err){
-        showErr("Submission failed. Double-check your connection and try again.");
-        console.error(err);
-      }
+  if(!payload.name || !payload.phone || !payload.email || !payload.dream || !payload.majors.length ||
+     !payload.attendance || !payload.signature || !payload.ack || !payload.superpower ||
+     !payload.music || !payload.firstApp){
+    return showErr("Please complete all required fields, sign, and acknowledge the policy.");
+  }
+  if(!/^[a-z0-9._%+-]+@highpoint\.edu$/i.test(payload.email)) return showErr("Email must be @highpoint.edu.");
+  if(!ALLOWED_EMAILS.includes(payload.email)) return showErr("Pick your email from the dropdown.");
+
+  try{
+    await fetch(GAS_ENDPOINT, {
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
     });
+    showMsg("Saved. You’ll receive your role & group after all 16 have submitted.");
+    form.reset(); tags=[]; renderTags(); emailSelect.value="";
+  }catch(e){
+    console.error(e);
+    showErr("Submission failed. Check your connection and try again.");
+  }
+});
 
-    function val(id){return (document.getElementById(id).value||"").trim();}
-
-    function showMsg(t){msgEl.textContent=t; msgEl.classList.remove("hide"); errEl.classList.add("hide");}
-    function showErr(t){errEl.textContent=t; errEl.classList.remove("hide"); msgEl.classList.add("hide");}
-  </script>
+function val(id){ return (document.getElementById(id).value||"").trim(); }
+function showMsg(t){ msg.textContent=t; msg.classList.remove('hide'); }
+function showErr(t){ err.textContent=t; err.classList.remove('hide'); }
+</script>
 </body>
 </html>
