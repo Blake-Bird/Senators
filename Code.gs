@@ -7,7 +7,13 @@
 
 const SHEET_NAME = "Form Responses 1";
 const ROLE_CAPS = {"Marketing & Media":6,"Finance & Logistics":5,"Event Planner & Space":5};
-const GROUPS = ["G1 — Social & Experiences","G2 — Wellness & Growth","G3 — Service & Philanthropy","G4 — Academic & Career","G5 — Culture & Traditions"];
+const GROUPS = [
+  "G1 — Social & Experiences",
+  "G2 — Wellness & Growth",
+  "G3 — Service & Philanthropy",
+  "G4 — Academic & Career",
+  "G5 — Culture & Traditions"
+];
 
 // Optional: restrict to these emails only (must also be in frontend dropdown)
 const ALLOWED_EMAILS = [
@@ -16,9 +22,12 @@ const ALLOWED_EMAILS = [
   "2029president@highpoint.edu","evanzego@highpoint.edu","eravenel@highpoint.edu",
   "espurrie@highpoint.edu","gllopis@highpoint.edu","hdaly1@highpoint.edu",
   "jkrumpe@highpoint.edu","jpace@highpoint.edu","kkincai2@highpoint.edu",
-  "mreinharr@highpoint.edu","ncastro@highpoint.edu","2029events@highpoint.edu",
+  "mreinhar@highpoint.edu", // <-- fixed
+  "ncastro@highpoint.edu","2029events@highpoint.edu",
   "2029vp@highpoint.edu","tshah1@highpoint.edu","tvanscot@highpoint.edu","lporter2@highpoint.edu"
 ];
+
+function doGet() { return ContentService.createTextOutput("ok"); }
 
 function doPost(e){
   const body = JSON.parse(e.postData.contents||"{}");
@@ -52,7 +61,7 @@ function doPost(e){
     if(i!==-1) rowToWrite = i+2;
   }
 
-  // Write raw
+  // Write raw (cols A–M)
   sh.getRange(rowToWrite,1,1,13).setValues([[
     new Date(), body.name||"", body.phone||"", email,
     JSON.stringify(body.majors||[]), body.dream||"",
@@ -61,7 +70,7 @@ function doPost(e){
     JSON.stringify(body.laneRank||[])
   ]]);
 
-  // Recompute scores + roles for ALL rows (so caps remain exact)
+  // Recompute scores + roles for ALL rows
   const rng = sh.getRange(2,1,Math.max(sh.getLastRow()-1,0), headers.length);
   const data = rng.getValues().map((r,i)=>({
     row:i+2,
@@ -94,7 +103,7 @@ function doPost(e){
     return Object.assign({}, r, {primary, secondary});
   });
 
-  // Slot into 5 groups (round-robin by role). Extra media → floater.
+  // Grouping
   const finance = withRoles.filter(r=>r.primary==="Finance & Logistics");
   const space   = withRoles.filter(r=>r.primary==="Event Planner & Space");
   const media   = withRoles.filter(r=>r.primary==="Marketing & Media");
@@ -115,29 +124,29 @@ function doPost(e){
   slots.forEach(s=>{ ["fin","space","media"].forEach(k=>{ if(s[k]) placed.add(s[k].row); }); });
   const mediaLeft = media.filter(m=>!placed.has(m.row));
 
-  // write scores + roles first
+  // Write scores/roles
   withRoles.forEach(r=>{
     const row = r.row;
     sh.getRange(row, headers.indexOf("Score — Finance & Logistics")+1, 1, 5)
       .setValues([[r.fin, r.space, r.media, r.total, r.primary]]);
     sh.getRange(row, headers.indexOf("Secondary Role")+1).setValue(r.secondary||"");
-    sh.getRange(row, headers.indexOf("Is Media Floater (Y/N")+2).setValue(""); // clear
+    sh.getRange(row, headers.indexOf("Is Media Floater (Y/N)")+1).setValue(""); // clear floater flag
   });
 
-  // write groups
+  // Write groups
   slots.forEach(s=>{
     if(s.fin)   sh.getRange(s.fin.row,   headers.indexOf("Assigned Group")+1).setValue(s.g);
     if(s.space) sh.getRange(s.space.row, headers.indexOf("Assigned Group")+1).setValue(s.g);
     if(s.media) sh.getRange(s.media.row, headers.indexOf("Assigned Group")+1).setValue(s.g);
   });
   mediaLeft.forEach(m=>{
-    sh.getRange(m.row, headers.indexOf("Is Media Floater (Y/N")+2).setValue("Y");
+    sh.getRange(m.row, headers.indexOf("Is Media Floater (Y/N)")+1).setValue("Y");
   });
 
   return ContentService.createTextOutput("ok");
 }
 
-// ---- Scoring logic (same signals you approved) ----
+// ----- Scoring -----
 function score(d){
   const sup = (d.superpower||"").trim();
   const music = (d.music||"").trim();
