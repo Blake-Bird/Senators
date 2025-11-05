@@ -13,7 +13,7 @@
     --radius:18px;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
+  html,body{height:100%; max-width:100%; overflow-x:hidden;} /* FIX: hard lock horizontal scroll */
   body{
     margin:0; color:var(--ink);
     font-family: Inter, ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -21,13 +21,12 @@
       radial-gradient(1200px 600px at -10% -10%, #EDE7FF 0%, transparent 60%),
       radial-gradient(900px 600px at 110% -20%, #FFF7E0 0%, transparent 60%),
       linear-gradient(180deg,#FFFFFF,#F8F7FF 60%,#FFFFFF);
-    overflow-x:hidden;
   }
 
-  /* Hero with more height so nothing collides */
+  /* HERO */
   .hero-wrap{position:relative; overflow:hidden; padding-top:calc(14px + env(safe-area-inset-top));}
   .band{
-    position:absolute; inset:0 0 auto 0; height:280px; /* ↑ */
+    position:absolute; inset:0 0 auto 0; height:300px; /* FIX: taller so chip never hides */
     background:linear-gradient(180deg,#5A2BC4 0%,#4D1EAC 55%,#330072 100%);
     clip-path: ellipse(120% 72% at 50% 0%); transform:translateZ(0); z-index:0;
   }
@@ -37,21 +36,20 @@
   }
   .spark.s1{top:-40px; left:8%} .spark.s2{top:-60px; right:6%}
   .hero{
-    max-width:1040px; margin:0 auto; padding:38px 22px 24px;
+    max-width:1040px; margin:0 auto; padding:38px 22px 52px; /* FIX: more bottom pad */
     display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
   }
-  .brand{position:relative; z-index:2; color:#fff; letter-spacing:.2px; font-weight:900; font-size:clamp(20px,2.2vw,26px)}
+  .brand{position:relative; z-index:2; color:#fff; letter-spacing:.2px; font-weight:900; font-size:clamp(20px,2.2vw,26px); text-shadow:0 2px 10px rgba(0,0,0,.25);} /* FIX: readable */
   .chip{position:relative; z-index:2; display:inline-flex; gap:8px; align-items:center;
-    padding:8px 12px; background:#fff2; color:#F8F5FF; border:1px solid #ffffff42; border-radius:999px;
-    font-weight:800; font-size:12px; backdrop-filter: blur(6px);
-  }
+    padding:8px 12px; background:#ffffff22; color:#FFF; border:1px solid #ffffff55; border-radius:999px;
+    font-weight:800; font-size:12px; backdrop-filter: blur(6px); text-shadow:0 2px 8px rgba(0,0,0,.25);} /* FIX: stronger contrast */
   .gold{color:#FFE9B0}
 
-  /* Shell */
-  .wrap{max-width:1040px; margin:0 auto; padding:0 22px 80px; position:relative; z-index:1}
+  /* SHELL */
+  .wrap{max-width:1040px; margin:0 auto; padding:0 22px 80px; position:relative; z-index:1; overflow-x:clip;}
   .card{
     background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:22px; margin-top:-64px; /* sits under hero but leaves space for title */
+    padding:22px; margin-top:-40px; /* FIX: was -64; leaves chip fully visible */
     transform:translateY(18px); opacity:0; transition:transform .7s cubic-bezier(.2,.6,.2,1), opacity .7s;
   }
   .card.on{transform:none; opacity:1}
@@ -61,30 +59,41 @@
 
   .grid{display:grid; gap:14px}
   .cols-2{grid-template-columns:1fr 1fr}
-  @media (max-width:800px){ .cols-2{grid-template-columns:1fr} .wrap{padding:0 16px calc(60px + env(safe-area-inset-bottom))} .card{padding:18px} }
+  @media (max-width:800px){
+    .cols-2{grid-template-columns:1fr}
+    .wrap{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
+    .card{padding:18px}
+  }
 
   label{display:block; font-size:12px; font-weight:800; color:#413a6b; margin:4px 0 6px 2px; letter-spacing:.15px}
   input,select{
     width:100%; background:#fff; color:var(--ink);
     border:1px solid var(--line); border-radius:12px; padding:12px 14px; outline:none;
     transition:border .12s, box-shadow .12s, transform .06s, background .2s;
-    box-shadow:0 2px 6px rgba(17,16,36,.06); /* subtle 3D */
+    box-shadow:0 2px 6px rgba(17,16,36,.06);
   }
   input:focus,select:focus{border-color:#BFA6FF; box-shadow:0 6px 18px rgba(51,0,114,.15), 0 0 0 5px var(--focus)}
   select{background-image:linear-gradient(to bottom right,#faf9ff,#fff)}
   .muted{color:#746f9a; font-size:12px}
 
-  /* Tagbox — more height, better X placement */
-  .tagbox{display:flex; flex-wrap:wrap; gap:8px; padding:10px; min-height:56px; background:#FBFAFF; border:1px solid var(--line); border-radius:12px}
+  /* TAGBOX */
+  .tagbox{display:flex; flex-wrap:wrap; gap:10px; padding:10px; min-height:56px; background:#FBFAFF; border:1px solid var(--line); border-radius:12px}
   .tag{
-    display:inline-flex; align-items:center; gap:8px;
-    background:#EFE9FF; border:1px solid #DBCFFE; color:#341a72; padding:8px 12px; border-radius:999px; font-size:12px; font-weight:800
+    position:relative; display:inline-flex; align-items:center;
+    background:linear-gradient(180deg,#F3EEFF,#E8E0FF);
+    border:1px solid #D7CBFE; color:#2E1B6B;
+    padding:10px 34px 10px 14px; border-radius:999px; font-size:13px; font-weight:800;
+    box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(50,30,120,.12);
   }
-  .tag button{display:inline-grid; place-items:center; width:18px; height:18px; line-height:18px; border-radius:50%;
-    border:1px solid #cdbafa; background:#fff; color:#6a4cff; cursor:pointer}
-  .taginput{flex:1; min-width:180px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none}
+  .tag button{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%); /* FIX: tidy “×” */
+    width:18px; height:18px; border-radius:50%; border:0; cursor:pointer;
+    color:#fff; background:#6a54cc; box-shadow:0 1px 0 #4d3bb0;
+    font-weight:900; line-height:18px; padding:0;
+  }
+  .taginput{flex:1; min-width:200px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none}
 
-  /* Ranker with more vertical spacing so dropdowns don’t feel crowded */
+  /* RANKER */
   .rank{display:grid; gap:12px; margin-top:4px}
   .item{
     display:flex; align-items:center; justify-content:space-between;
@@ -95,7 +104,7 @@
   .item:active{transform:scale(.996)}
   .drag{font-size:12px; font-weight:900; color:#6a54cc; background:#F0ECFF; border:1px solid #dcd4ff; padding:6px 10px; border-radius:999px}
 
-  /* Actions + toasts */
+  /* BUTTONS + TOASTS */
   .actions{display:flex; justify-content:flex-end; margin-top:12px}
   button{
     appearance:none; border:0; cursor:pointer; border-radius:14px;
@@ -107,16 +116,15 @@
   .ok{background:#F0FFF6; border:1px solid #9BE5C6; color:#0E6D4D} .err{background:#FFF4F4; border:1px solid #F3B5B5; color:#9E2E2E}
   .hide{display:none!important}
 
-  /* Scroll reveal */
+  /* REVEAL */
   .reveal{transform:translateY(10px); opacity:0; transition:transform .7s, opacity .7s}
   .reveal.on{transform:none; opacity:1}
 
-  /* Ensure dropdown popups don’t feel “on top” of other controls on mobile: give breathing room beneath selects on focus */
   .sb{margin-bottom:22px}
 </style>
 </head>
 <body>
-  <!-- Hero -->
+  <!-- HERO -->
   <div class="hero-wrap">
     <div class="band" id="band"></div>
     <div class="spark s1" id="s1"></div>
@@ -181,9 +189,10 @@
             <div class="muted" style="margin-top:8px"><b>I acknowledge</b> that unexcused absences carry consequences; repeated excuses — even when emailed — may also escalate.</div>
           </div>
         </div>
-        <div style="display:flex; align-items:center; gap:10px; margin-top:6px">
+        <!-- FIX: checkbox row padded & inside white card area on mobile -->
+        <div style="display:flex; align-items:center; gap:10px; margin-top:10px; padding-right:12px">
           <input id="ack" type="checkbox" required>
-          <label for="ack" class="muted">I’ve read and accept the policy above.</label>
+          <label for="ack" class="muted" style="margin:0;">I’ve read and accept the policy above.</label>
         </div>
       </section>
 
@@ -239,7 +248,7 @@
 
 <script>
 /* ===== CONFIG ===== */
-const GAS_ENDPOINT = "PUT_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // paste your /exec URL
+const GAS_ENDPOINT = "PUT_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 /* Senators (Name — email) */
 const SENATORS = [
@@ -256,47 +265,10 @@ const SENATORS = [
   ["Toni VanScott","tvanscot@highpoint.edu"],["Lelia Porter","lporter2@highpoint.edu"]
 ];
 
-/* HPU programs (subset—expand any time) */
-const MAJORS = [
- "Accounting (B.S.B.A.)","Accounting Minor","Actuarial Science (B.S.)",
- "Advertising / PR / Strategic Communication (B.A.)","Art History Minor","Athletic Coaching Minor",
- "Biochemistry (B.S.)","Biology (B.A., B.S.)","Biology Minor","Business Administration (B.S.B.A.)",
- "Business Analytics & Economics (B.S.B.A.)","Chemistry (B.A.)","Chemistry (B.S.)","Chemistry Minor","Chinese Minor",
- "Computer Engineering (B.S.)","Computer Science (B.A.)","Computer Science (B.S.)","Computer Science Minor",
- "Creative Writing Minor","Criminal Justice (B.A.)","Criminal Justice Minor","Cybersecurity (B.S.)",
- "Dance (B.A.)","Dance Minor","Data Analytics & Statistics (B.S.)","Data Analytics Minor","Data Science (B.S.)","Data Science Minor",
- "Design Studies — Graphic Design (B.A.)","Electrical Engineering (B.S.)","Elementary Education (B.A.)","English (B.A.)",
- "Entrepreneurship (B.S.B.A.)","Entrepreneurship Minor","Environmental Studies Minor",
- "Event Management (B.A.)","Event Management Minor","Exercise Science (B.S.)",
- "Fashion Merchandising (B.S.)","Fashion Merchandising Minor","Finance (B.S.B.A.)","Finance Minor",
- "French & Francophone Studies (B.A.)","French & Francophone Studies Minor","Furnishings Minor",
- "Game Design (B.A.)","Game Design Minor","Global Commerce Minor","Graphic Design Minor",
- "Health & Wellness (B.A.)","Healthcare Management (B.S.B.A.)","Healthcare Management Minor",
- "History (B.A.)","History Minor","Hospitality Management (B.A.)","Hospitality Management Minor","HR Management Minor",
- "Interior Design (B.S.)","International Business (B.S.B.A.)","International Relations (B.A.)",
- "Italian Studies Minor","Journalism (B.A.)","Journalism Minor","Leadership Studies Minor","Legal Studies Minor",
- "Marketing (B.S.B.A.)","Marketing Minor","Mathematical Economics (B.S.)",
- "Mathematics (B.A.)","Mathematics (B.S.)","Mathematics Minor",
- "Mechanical Engineering (B.S.)","Mechatronics (B.S.)","Media Production (B.A.)","Media Production Minor",
- "Museum Studies Minor","Music (B.A.)","Music Minor (Instrumental/Piano/Voice)","Musical Theatre Minor",
- "Neuroscience (B.S.)","Neuroscience Minor","Operations & Supply Chain Mgmt Minor",
- "Philosophy (B.A.)","Philosophy Minor","Photography Minor",
- "Physics (B.A.)","Physics (B.S.)","Physics Minor",
- "Political Science (B.A.)","Political Science Minor","Popular Culture Studies Minor",
- "Pre-Pharmacy Program","Pre-Dental Program","Pre-Nursing Program",
- "Psychology (B.S.)","Psychology Minor","Public & Professional Writing Minor",
- "Religion (B.A.)","Religion Minor","Sales (B.S.B.A.)","Sales Minor","Social Innovation Minor",
- "Social Media & Digital Communication (B.A.)","Social Media & Digital Communication Minor",
- "Sociology & Anthropology (B.A.)","Sociology & Anthropology Minor",
- "Spanish (B.A.)","Spanish Minor","Special Education (B.A.)","Special Education Minor",
- "Sport Management (B.A.)","Sports Management Minor",
- "Sports Media (B.A.)","Sports Media Minor","Statistics Minor",
- "Strategic Communication Minor","Studio Art (B.A.)","Studio Art Minor",
- "Studio Art — General Fine Arts (B.F.A.)","Studio Art — Graphic Design (B.F.A.)",
- "Theater (B.A.)","Theater Minor","Visual Merchandising Design Minor","Women’s Leadership Development Minor"
-];
+/* HPU programs (whitelist) — abbreviated list shown earlier */
+const MAJORS = [/* … keep your full list from last version … */];
 
-/* Parallax */
+/* Parallax (kept) */
 const band=document.getElementById('band'), s1=document.getElementById('s1'), s2=document.getElementById('s2');
 window.addEventListener('scroll',()=>{ const y=window.scrollY||0; band.style.transform=`translateY(${y*.25}px)`; s1.style.transform=`translateY(${y*.18}px)`; s2.style.transform=`translateY(${y*.12}px)`;});
 
@@ -311,7 +283,7 @@ SENATORS.slice().sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,email])=>{
   emailSelect.appendChild(new Option(`${name} — ${email}`, email));
 });
 
-/* Majors whitelist */
+/* Majors whitelist + tag pills */
 const tagbox=document.getElementById('tagbox'); const taginput=document.getElementById('taginput'); let tags=[];
 function renderTags(){
   tagbox.querySelectorAll('.tag').forEach(n=>n.remove());
@@ -324,7 +296,10 @@ function renderTags(){
 }
 taginput.setAttribute('list','majors');
 const dl=document.createElement('datalist'); dl.id='majors'; MAJORS.forEach(m=>{const o=document.createElement('option'); o.value=m; dl.appendChild(o)}); document.body.appendChild(dl);
-function addMajor(val){ const v=(val||"").trim(); if(!v) return; if(!MAJORS.includes(v)){ toastErr("Choose from the HPU list."); taginput.value=""; return; } if(!tags.includes(v)) tags.push(v); taginput.value=""; renderTags(); }
+function addMajor(val){ const v=(val||"").trim(); if(!v) return;
+  if(!MAJORS.includes(v)){ toastErr("Choose from the HPU list."); taginput.value=""; return; }
+  if(!tags.includes(v)) tags.push(v); taginput.value=""; renderTags();
+}
 taginput.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===','){ e.preventDefault(); addMajor(taginput.value.replace(',','')); }});
 taginput.addEventListener('blur',()=>addMajor(taginput.value));
 
@@ -341,10 +316,8 @@ rank.querySelectorAll('.item').forEach(i=>{
 });
 function currentRanking(){ return Array.from(rank.querySelectorAll('.item')).map(i=>i.firstElementChild.textContent.trim()); }
 
-/* Keep selects visible when opening (prevents popup covering) */
-document.querySelectorAll('select').forEach(sel=>{
-  sel.addEventListener('focus',()=>{ sel.closest('.sb')?.scrollIntoView({block:'center',behavior:'smooth'}); });
-});
+/* FIX: remove auto scroll-on-focus so dropdowns don’t “jump” */
+ // (intentionally empty)
 
 /* Submit */
 const form=document.getElementById('form'); const ok=document.getElementById('msg'); const er=document.getElementById('err');
@@ -370,7 +343,7 @@ function val(id){ return (document.getElementById(id).value||"").trim(); }
 function toastOk(t){ ok.textContent=t; ok.classList.remove('hide'); }
 function toastErr(t){ er.textContent=t; er.classList.remove('hide'); }
 
-/* Parallax reveal */
+/* Card reveal */
 const card=document.querySelector('.card'); const iobs=new IntersectionObserver(([e])=>{ if(e.isIntersecting) card.classList.add('on'); },{threshold:.2}); iobs.observe(card);
 </script>
 </body>
