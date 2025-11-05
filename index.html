@@ -2,58 +2,45 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>HPU SGA — Senators Intake</title>
 <meta name="color-scheme" content="light">
 <style>
   :root{
-    --purple:#330072;        /* Royal Purple */
-    --purple-600:#4B1796;
-    --purple-50:#F4F1FB;
-    --gold:#C9B37E;
-    --ink:#191326;
-    --line:#E5E1F2;
-    --card:#ffffff;
-    --focus:#D8CCFF;
-    --shadow: 0 10px 35px rgba(51,0,114,.12), 0 2px 10px rgba(16,0,60,.08);
+    --purple:#330072; --purple-600:#4B1796; --purple-50:#F4F1FB;
+    --gold:#C9B37E; --ink:#191326; --line:#E5E1F2; --card:#fff;
+    --focus:#D8CCFF; --shadow:0 10px 35px rgba(51,0,114,.12), 0 2px 10px rgba(16,0,60,.08);
     --radius:18px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0; color:var(--ink); font-family: Inter, ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    margin:0; color:var(--ink);
+    font-family: Inter, ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     background:
       radial-gradient(1200px 600px at -10% -10%, #EDE7FF 0%, transparent 60%),
       radial-gradient(900px 600px at 110% -20%, #FFF7E0 0%, transparent 60%),
-      linear-gradient(180deg,#FFFFFF, #F8F7FF 60%, #FFFFFF);
+      linear-gradient(180deg,#FFFFFF,#F8F7FF 60%,#FFFFFF);
     overflow-x:hidden;
   }
 
-  /* Parallax hero band */
-  .hero-wrap{position:relative; overflow:hidden}
-  .hero{
-    max-width:1040px; margin:0 auto; padding:36px 22px 18px;
-    display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-  }
+  /* Hero with more height so nothing collides */
+  .hero-wrap{position:relative; overflow:hidden; padding-top:calc(14px + env(safe-area-inset-top));}
   .band{
-    position:absolute; inset:0 0 auto 0; height:240px;
-    background:
-      linear-gradient(180deg, #5A2BC4 0%, #4D1EAC 55%, #330072 100%);
-    transform:translateZ(0);
-    clip-path: ellipse(120% 70% at 50% 0%);
-    z-index:0;
+    position:absolute; inset:0 0 auto 0; height:280px; /* ↑ */
+    background:linear-gradient(180deg,#5A2BC4 0%,#4D1EAC 55%,#330072 100%);
+    clip-path: ellipse(120% 72% at 50% 0%); transform:translateZ(0); z-index:0;
   }
   .spark{position:absolute; width:320px; height:320px; border-radius:50%;
     background: radial-gradient(closest-side, rgba(255,239,172,.75), rgba(255,239,172,0));
     filter: blur(8px); opacity:.35; pointer-events:none; z-index:0;
   }
-  .spark.s1{top:-40px; left:8%}
-  .spark.s2{top:-60px; right:6%}
-
-  .brand{
-    position:relative; z-index:2; color:#fff; letter-spacing:.2px;
-    font-weight:900; font-size:26px;
+  .spark.s1{top:-40px; left:8%} .spark.s2{top:-60px; right:6%}
+  .hero{
+    max-width:1040px; margin:0 auto; padding:38px 22px 24px;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
   }
+  .brand{position:relative; z-index:2; color:#fff; letter-spacing:.2px; font-weight:900; font-size:clamp(20px,2.2vw,26px)}
   .chip{position:relative; z-index:2; display:inline-flex; gap:8px; align-items:center;
     padding:8px 12px; background:#fff2; color:#F8F5FF; border:1px solid #ffffff42; border-radius:999px;
     font-weight:800; font-size:12px; backdrop-filter: blur(6px);
@@ -61,73 +48,75 @@
   .gold{color:#FFE9B0}
 
   /* Shell */
-  .wrap{max-width:1040px; margin:0 auto; padding:18px 22px 80px; position:relative; z-index:1}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 22px 80px; position:relative; z-index:1}
   .card{
     background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:22px; margin-top:-80px; /* overlaps purple band */
+    padding:22px; margin-top:-64px; /* sits under hero but leaves space for title */
     transform:translateY(18px); opacity:0; transition:transform .7s cubic-bezier(.2,.6,.2,1), opacity .7s;
   }
   .card.on{transform:none; opacity:1}
 
-  /* Sections */
-  h2{margin:0 0 8px 0; color:var(--purple); font-size:16px; letter-spacing:.2px}
-  p.note{margin:2px 0 10px 0; color:#5b5675; font-size:13px}
+  h2{margin:8px 0 10px; color:var(--purple); font-size:clamp(15px,1.6vw,16px); letter-spacing:.2px}
+  p.note{margin:2px 0 10px; color:#5b5675; font-size:13px}
 
-  .grid{display:grid; gap:12px}
+  .grid{display:grid; gap:14px}
   .cols-2{grid-template-columns:1fr 1fr}
-  @media (max-width:800px){ .cols-2{grid-template-columns:1fr} }
+  @media (max-width:800px){ .cols-2{grid-template-columns:1fr} .wrap{padding:0 16px calc(60px + env(safe-area-inset-bottom))} .card{padding:18px} }
 
   label{display:block; font-size:12px; font-weight:800; color:#413a6b; margin:4px 0 6px 2px; letter-spacing:.15px}
   input,select{
     width:100%; background:#fff; color:var(--ink);
     border:1px solid var(--line); border-radius:12px; padding:12px 14px; outline:none;
-    transition:border .12s, box-shadow .12s, transform .06s;
+    transition:border .12s, box-shadow .12s, transform .06s, background .2s;
+    box-shadow:0 2px 6px rgba(17,16,36,.06); /* subtle 3D */
   }
-  input:focus,select:focus{border-color:#BFA6FF; box-shadow:0 0 0 5px var(--focus)}
+  input:focus,select:focus{border-color:#BFA6FF; box-shadow:0 6px 18px rgba(51,0,114,.15), 0 0 0 5px var(--focus)}
+  select{background-image:linear-gradient(to bottom right,#faf9ff,#fff)}
   .muted{color:#746f9a; font-size:12px}
 
-  /* Majors selector (whitelist, no misspellings) */
-  .tagbox{display:flex; flex-wrap:wrap; gap:8px; padding:8px; min-height:48px; background:#FBFAFF; border:1px solid var(--line); border-radius:12px}
-  .tag{background:#EFE9FF; border:1px solid #DBCFFE; color:#341a72; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800}
-  .tag button{background:transparent; border:0; color:#6a4cff; margin-left:6px; cursor:pointer}
-  .taginput{flex:1; min-width:180px; background:transparent; border:0; color:#2a2551; padding:6px 8px; outline:none}
+  /* Tagbox — more height, better X placement */
+  .tagbox{display:flex; flex-wrap:wrap; gap:8px; padding:10px; min-height:56px; background:#FBFAFF; border:1px solid var(--line); border-radius:12px}
+  .tag{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#EFE9FF; border:1px solid #DBCFFE; color:#341a72; padding:8px 12px; border-radius:999px; font-size:12px; font-weight:800
+  }
+  .tag button{display:inline-grid; place-items:center; width:18px; height:18px; line-height:18px; border-radius:50%;
+    border:1px solid #cdbafa; background:#fff; color:#6a4cff; cursor:pointer}
+  .taginput{flex:1; min-width:180px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none}
 
-  /* Ranker */
-  .rank{display:grid; gap:10px}
+  /* Ranker with more vertical spacing so dropdowns don’t feel crowded */
+  .rank{display:grid; gap:12px; margin-top:4px}
   .item{
     display:flex; align-items:center; justify-content:space-between;
-    background:#FFFFFF; border:1px dashed #D7D1EE; padding:12px 14px; border-radius:12px;
-    cursor:grab; transition:transform .12s, box-shadow .12s;
+    background:#FFFFFF; border:1px dashed #D7D1EE; padding:14px 14px; border-radius:12px;
+    cursor:grab; transition:transform .12s, box-shadow .12s; box-shadow:0 1px 5px rgba(17,16,36,.04)
   }
   .item:hover{box-shadow:0 10px 22px rgba(51,0,114,.08)}
   .item:active{transform:scale(.996)}
   .drag{font-size:12px; font-weight:900; color:#6a54cc; background:#F0ECFF; border:1px solid #dcd4ff; padding:6px 10px; border-radius:999px}
 
-  /* Actions */
-  .actions{display:flex; justify-content:flex-end; margin-top:10px}
+  /* Actions + toasts */
+  .actions{display:flex; justify-content:flex-end; margin-top:12px}
   button{
     appearance:none; border:0; cursor:pointer; border-radius:14px;
-    background:
-      linear-gradient(135deg, #6A35E8, #4D1EAC);
-    color:white; font-weight:900; letter-spacing:.2px; padding:13px 18px;
-    box-shadow:0 12px 30px rgba(51,0,114,.28);
-    transition:transform .06s, filter .2s;
+    background:linear-gradient(135deg,#6A35E8,#4D1EAC); color:white; font-weight:900; letter-spacing:.2px; padding:13px 18px;
+    box-shadow:0 12px 30px rgba(51,0,114,.28); transition:transform .06s, filter .2s;
   }
-  button:hover{filter:brightness(1.05) saturate(1.08)}
-  button:active{transform:translateY(1px)}
-
+  button:hover{filter:brightness(1.05) saturate(1.08)} button:active{transform:translateY(1px)}
   .pill{display:inline-flex; gap:8px; align-items:center; padding:8px 10px; border-radius:999px; font-size:12px; font-weight:800}
-  .ok{background:#F0FFF6; border:1px solid #9BE5C6; color:#0E6D4D}
-  .err{background:#FFF4F4; border:1px solid #F3B5B5; color:#9E2E2E}
+  .ok{background:#F0FFF6; border:1px solid #9BE5C6; color:#0E6D4D} .err{background:#FFF4F4; border:1px solid #F3B5B5; color:#9E2E2E}
   .hide{display:none!important}
 
-  /* Scroll reveal utility */
+  /* Scroll reveal */
   .reveal{transform:translateY(10px); opacity:0; transition:transform .7s, opacity .7s}
   .reveal.on{transform:none; opacity:1}
+
+  /* Ensure dropdown popups don’t feel “on top” of other controls on mobile: give breathing room beneath selects on focus */
+  .sb{margin-bottom:22px}
 </style>
 </head>
 <body>
-  <!-- Purple hero with gold glow -->
+  <!-- Hero -->
   <div class="hero-wrap">
     <div class="band" id="band"></div>
     <div class="spark s1" id="s1"></div>
@@ -149,11 +138,11 @@
         </div>
 
         <div class="grid cols-2">
-          <div>
+          <div class="sb">
             <label>Your @highpoint.edu Email *</label>
             <select id="emailSelect" required></select>
           </div>
-          <div>
+          <div class="sb">
             <label>Dream Job (1–2 words) *</label>
             <input id="dream" required list="dreams" placeholder="Lawyer, Doctor, Teacher, Engineer, Nurse, Analyst, Architect, Marketer, Journalist, Designer">
             <datalist id="dreams">
@@ -167,17 +156,17 @@
         <div>
           <label>Major(s) / Minor(s) *</label>
           <div id="tagbox" class="tagbox">
-            <input id="taginput" class="taginput" placeholder="Type to search HPU programs • Enter to add">
+            <input id="taginput" class="taginput" placeholder="Type to search HPU programs • Use comma or Enter to add multiple">
           </div>
-          <div class="muted">You can only add listed HPU programs (no typos). Remove with ×.</div>
+          <div class="muted">Remove a program with ×.</div>
         </div>
       </section>
 
       <!-- ATTENDANCE -->
-      <section style="margin-top:10px">
+      <section style="margin-top:12px">
         <h2>Attendance & Acknowledgment</h2>
         <div class="grid cols-2">
-          <div>
+          <div class="sb">
             <label>Policy (Even-date Mondays @ 8 PM, Cottrell) *</label>
             <select id="attendance" required>
               <option value="">Select…</option>
@@ -189,19 +178,20 @@
           <div>
             <label>Signature (initials) *</label>
             <input id="signature" required placeholder="BB">
+            <div class="muted" style="margin-top:8px"><b>I acknowledge</b> that unexcused absences carry consequences; repeated excuses — even when emailed — may also escalate.</div>
           </div>
         </div>
         <div style="display:flex; align-items:center; gap:10px; margin-top:6px">
           <input id="ack" type="checkbox" required>
-          <label for="ack" class="muted"><b>I acknowledge</b> that unexcused absences carry consequences; repeated excuses — even when emailed — may also escalate.</label>
+          <label for="ack" class="muted">I’ve read and accept the policy above.</label>
         </div>
       </section>
 
       <!-- SIGNALS -->
-      <section style="margin-top:10px">
+      <section style="margin-top:12px">
         <h2>Three Fast Signals</h2>
         <div class="grid cols-2">
-          <div>
+          <div class="sb">
             <label>Everyday superpower *</label>
             <select id="superpower" required>
               <option value="">Select…</option>
@@ -209,7 +199,7 @@
               <option>Time freeze</option><option>Shape-shift</option>
             </select>
           </div>
-          <div>
+          <div class="sb">
             <label>Music taste *</label>
             <select id="music" required>
               <option value="">Select…</option>
@@ -218,7 +208,7 @@
             </select>
           </div>
         </div>
-        <div>
+        <div class="sb">
           <label>When you start something, what do you open first? *</label>
           <select id="firstApp" required>
             <option value="">Select…</option>
@@ -229,7 +219,7 @@
       </section>
 
       <!-- RANKER -->
-      <section style="margin-top:10px">
+      <section style="margin-top:12px">
         <h2>Rank event lanes (drag → top is #1)</h2>
         <div id="rank" class="rank reveal">
           <div class="item" draggable="true"><div>Social & Experiences</div><span class="drag">Drag</span></div>
@@ -240,8 +230,8 @@
         </div>
       </section>
 
-      <div id="msg" class="pill ok hide" style="margin-top:8px"></div>
-      <div id="err" class="pill err hide" style="margin-top:8px"></div>
+      <div id="msg" class="pill ok hide" style="margin-top:10px"></div>
+      <div id="err" class="pill err hide" style="margin-top:10px"></div>
 
       <div class="actions"><button type="submit">Submit</button></div>
     </form>
@@ -251,39 +241,27 @@
 /* ===== CONFIG ===== */
 const GAS_ENDPOINT = "PUT_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // paste your /exec URL
 
-/* Senators → dropdown label 'Name — email', value=email (sorted) */
+/* Senators (Name — email) */
 const SENATORS = [
-  ["Adelaide Schultz","aschult2@highpoint.edu"],
-  ["Anya Covington","2029communications@highpoint.edu"],
-  ["Aubrey Bollar","abollar@highpoint.edu"],
-  ["Baylie Mendivil","bmendivi@highpoint.edu"],
-  ["Blake Bird","2029treasurer@highpoint.edu"],
-  ["Christopher Kraras","ckraras@highpoint.edu"],
-  ["David Kwafo","2029president@highpoint.edu"],
-  ["Elle Vanzego","evanzego@highpoint.edu"],
-  ["Ellijah Ravenell","eravenel@highpoint.edu"],
-  ["Emily Spurrier","espurrie@highpoint.edu"],
-  ["Gian Llopis","gllopis@highpoint.edu"],
-  ["Harrison Daly","hdaly1@highpoint.edu"],
-  ["Jack Krumpe","jkrumpe@highpoint.edu"],
-  ["Jada Pace","jpace@highpoint.edu"],
-  ["Kailyn Kincaid","kkincai2@highpoint.edu"],
-  ["Marren Reinhard","mreinhar@highpoint.edu"],
-  ["Nyla Castro","ncastro@highpoint.edu"],
-  ["Preston Hardgrove","2029events@highpoint.edu"],
-  ["Sean Colbert-Lewis","2029vp@highpoint.edu"],
-  ["Thomas Shah","tshah1@highpoint.edu"],
-  ["Toni VanScott","tvanscot@highpoint.edu"],
-  ["Lelia Porter","lporter2@highpoint.edu"]
+  ["Adelaide Schultz","aschult2@highpoint.edu"],["Anya Covington","2029communications@highpoint.edu"],
+  ["Aubrey Bollar","abollar@highpoint.edu"],["Baylie Mendivil","bmendivi@highpoint.edu"],
+  ["Blake Bird","2029treasurer@highpoint.edu"],["Christopher Kraras","ckraras@highpoint.edu"],
+  ["David Kwafo","2029president@highpoint.edu"],["Elle Vanzego","evanzego@highpoint.edu"],
+  ["Ellijah Ravenell","eravenel@highpoint.edu"],["Emily Spurrier","espurrie@highpoint.edu"],
+  ["Gian Llopis","gllopis@highpoint.edu"],["Harrison Daly","hdaly1@highpoint.edu"],
+  ["Jack Krumpe","jkrumpe@highpoint.edu"],["Jada Pace","jpace@highpoint.edu"],
+  ["Kailyn Kincaid","kkincai2@highpoint.edu"],["Marren Reinhard","mreinhar@highpoint.edu"],
+  ["Nyla Castro","ncastro@highpoint.edu"],["Preston Hardgrove","2029events@highpoint.edu"],
+  ["Sean Colbert-Lewis","2029vp@highpoint.edu"],["Thomas Shah","tshah1@highpoint.edu"],
+  ["Toni VanScott","tvanscot@highpoint.edu"],["Lelia Porter","lporter2@highpoint.edu"]
 ];
 
-/* HPU programs (whitelist — abbreviated list kept from your screenshots; expand anytime) */
+/* HPU programs (subset—expand any time) */
 const MAJORS = [
  "Accounting (B.S.B.A.)","Accounting Minor","Actuarial Science (B.S.)",
  "Advertising / PR / Strategic Communication (B.A.)","Art History Minor","Athletic Coaching Minor",
- "Biochemistry (B.S.)","Biology (B.A., B.S.)","Biology Minor",
- "Business Administration (B.S.B.A.)","Business Administration Minor","Business Analytics & Economics (B.S.B.A.)",
- "Chemistry (B.A.)","Chemistry (B.S.)","Chemistry Minor","Chinese Minor",
+ "Biochemistry (B.S.)","Biology (B.A., B.S.)","Biology Minor","Business Administration (B.S.B.A.)",
+ "Business Analytics & Economics (B.S.B.A.)","Chemistry (B.A.)","Chemistry (B.S.)","Chemistry Minor","Chinese Minor",
  "Computer Engineering (B.S.)","Computer Science (B.A.)","Computer Science (B.S.)","Computer Science Minor",
  "Creative Writing Minor","Criminal Justice (B.A.)","Criminal Justice Minor","Cybersecurity (B.S.)",
  "Dance (B.A.)","Dance Minor","Data Analytics & Statistics (B.S.)","Data Analytics Minor","Data Science (B.S.)","Data Science Minor",
@@ -293,9 +271,8 @@ const MAJORS = [
  "Fashion Merchandising (B.S.)","Fashion Merchandising Minor","Finance (B.S.B.A.)","Finance Minor",
  "French & Francophone Studies (B.A.)","French & Francophone Studies Minor","Furnishings Minor",
  "Game Design (B.A.)","Game Design Minor","Global Commerce Minor","Graphic Design Minor",
- "Health & PE (B.A.)","Health & Wellness (B.A.)","Health Education Minor",
- "Healthcare Management (B.S.B.A.)","Healthcare Management Minor","History (B.A.)","History Minor",
- "Hospitality Management (B.A.)","Hospitality Management Minor","HR Management Minor",
+ "Health & Wellness (B.A.)","Healthcare Management (B.S.B.A.)","Healthcare Management Minor",
+ "History (B.A.)","History Minor","Hospitality Management (B.A.)","Hospitality Management Minor","HR Management Minor",
  "Interior Design (B.S.)","International Business (B.S.B.A.)","International Relations (B.A.)",
  "Italian Studies Minor","Journalism (B.A.)","Journalism Minor","Leadership Studies Minor","Legal Studies Minor",
  "Marketing (B.S.B.A.)","Marketing Minor","Mathematical Economics (B.S.)",
@@ -308,8 +285,7 @@ const MAJORS = [
  "Political Science (B.A.)","Political Science Minor","Popular Culture Studies Minor",
  "Pre-Pharmacy Program","Pre-Dental Program","Pre-Nursing Program",
  "Psychology (B.S.)","Psychology Minor","Public & Professional Writing Minor",
- "Religion (B.A.)","Religion Minor",
- "Sales (B.S.B.A.)","Sales Minor","Social Innovation Minor",
+ "Religion (B.A.)","Religion Minor","Sales (B.S.B.A.)","Sales Minor","Social Innovation Minor",
  "Social Media & Digital Communication (B.A.)","Social Media & Digital Communication Minor",
  "Sociology & Anthropology (B.A.)","Sociology & Anthropology Minor",
  "Spanish (B.A.)","Spanish Minor","Special Education (B.A.)","Special Education Minor",
@@ -320,99 +296,82 @@ const MAJORS = [
  "Theater (B.A.)","Theater Minor","Visual Merchandising Design Minor","Women’s Leadership Development Minor"
 ];
 
-/* ===== Hero parallax (subtle) ===== */
+/* Parallax */
 const band=document.getElementById('band'), s1=document.getElementById('s1'), s2=document.getElementById('s2');
-window.addEventListener('scroll',()=>{
-  const y=window.scrollY||0;
-  band.style.transform=`translateY(${y*.25}px)`;
-  s1.style.transform=`translateY(${y*.18}px)`;
-  s2.style.transform=`translateY(${y*.12}px)`;
-});
+window.addEventListener('scroll',()=>{ const y=window.scrollY||0; band.style.transform=`translateY(${y*.25}px)`; s1.style.transform=`translateY(${y*.18}px)`; s2.style.transform=`translateY(${y*.12}px)`;});
 
-/* ===== Scroll reveal ===== */
+/* Reveal */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.15});
 document.querySelectorAll('.reveal,.card').forEach(el=>io.observe(el));
 
-/* ===== Email dropdown ===== */
+/* Email dropdown */
 const emailSelect=document.getElementById('emailSelect');
 emailSelect.appendChild(new Option('Select…',''));
 SENATORS.slice().sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,email])=>{
   emailSelect.appendChild(new Option(`${name} — ${email}`, email));
 });
 
-/* ===== Majors: whitelist only (no typos) ===== */
-const tagbox=document.getElementById('tagbox'); const taginput=document.getElementById('taginput');
-let tags=[];
+/* Majors whitelist */
+const tagbox=document.getElementById('tagbox'); const taginput=document.getElementById('taginput'); let tags=[];
 function renderTags(){
   tagbox.querySelectorAll('.tag').forEach(n=>n.remove());
   tags.forEach(t=>{
     const el=document.createElement('span'); el.className='tag'; el.textContent=t;
-    const x=document.createElement('button'); x.type='button'; x.textContent='×'; x.onclick=()=>{tags=tags.filter(v=>v!==t); renderTags();};
+    const x=document.createElement('button'); x.type='button'; x.setAttribute('aria-label','Remove'); x.textContent='×';
+    x.onclick=()=>{tags=tags.filter(v=>v!==t); renderTags();};
     el.appendChild(x); tagbox.insertBefore(el, taginput);
   });
 }
 taginput.setAttribute('list','majors');
-const dl=document.createElement('datalist'); dl.id='majors';
-MAJORS.forEach(m=>{ const o=document.createElement('option'); o.value=m; dl.appendChild(o); });
-document.body.appendChild(dl);
-
-function addMajor(val){
-  const v=val.trim();
-  if(!v) return;
-  if(!MAJORS.includes(v)) { toastErr("Please choose from the HPU list."); taginput.value=""; return; }
-  if(!tags.includes(v)) tags.push(v);
-  taginput.value=""; renderTags();
-}
-taginput.addEventListener('keydown',e=>{
-  if(e.key==='Enter' || e.key===','){ e.preventDefault(); addMajor(taginput.value.replace(',','')); }
-});
+const dl=document.createElement('datalist'); dl.id='majors'; MAJORS.forEach(m=>{const o=document.createElement('option'); o.value=m; dl.appendChild(o)}); document.body.appendChild(dl);
+function addMajor(val){ const v=(val||"").trim(); if(!v) return; if(!MAJORS.includes(v)){ toastErr("Choose from the HPU list."); taginput.value=""; return; } if(!tags.includes(v)) tags.push(v); taginput.value=""; renderTags(); }
+taginput.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===','){ e.preventDefault(); addMajor(taginput.value.replace(',','')); }});
 taginput.addEventListener('blur',()=>addMajor(taginput.value));
 
-/* ===== Ranker (drag → reorder) ===== */
+/* Ranker */
 const rank=document.getElementById('rank'); let dragEl=null;
 rank.querySelectorAll('.item').forEach(i=>{
   i.addEventListener('dragstart',()=>{ dragEl=i; i.style.opacity=.6; });
   i.addEventListener('dragend',()=>{ dragEl=null; i.style.opacity=1; });
   i.addEventListener('dragover',e=>{
-    e.preventDefault(); const t=e.currentTarget;
-    if(t===dragEl) return;
+    e.preventDefault(); const t=e.currentTarget; if(t===dragEl) return;
     const rect=t.getBoundingClientRect(); const before=(e.clientY-rect.top) < rect.height/2;
     rank.insertBefore(dragEl, before?t:t.nextSibling);
   });
 });
 function currentRanking(){ return Array.from(rank.querySelectorAll('.item')).map(i=>i.firstElementChild.textContent.trim()); }
 
-/* ===== Submit ===== */
+/* Keep selects visible when opening (prevents popup covering) */
+document.querySelectorAll('select').forEach(sel=>{
+  sel.addEventListener('focus',()=>{ sel.closest('.sb')?.scrollIntoView({block:'center',behavior:'smooth'}); });
+});
+
+/* Submit */
 const form=document.getElementById('form'); const ok=document.getElementById('msg'); const er=document.getElementById('err');
 form.addEventListener('submit', async (e)=>{
   e.preventDefault(); ok.classList.add('hide'); er.classList.add('hide');
-
   const payload={
-    name:val('name'), phone:val('phone'),
-    email: emailSelect.value,
-    dream:val('dream'), majors:tags.slice(),
-    attendance:val('attendance'), signature:val('signature'), ack:document.getElementById('ack').checked,
-    superpower:val('superpower'), music:val('music'), firstApp:val('firstApp'),
-    laneRank: currentRanking()
+    name:val('name'), phone:val('phone'), email: emailSelect.value, dream:val('dream'),
+    majors:tags.slice(), attendance:val('attendance'), signature:val('signature'), ack:document.getElementById('ack').checked,
+    superpower:val('superpower'), music:val('music'), firstApp:val('firstApp'), laneRank: currentRanking()
   };
-
   if(!payload.name||!payload.phone||!payload.email||!payload.dream||!payload.majors.length||
      !payload.attendance||!payload.signature||!payload.ack||!payload.superpower||!payload.music||!payload.firstApp){
-    return toastErr("Complete all required fields, select majors from the list, sign, and acknowledge.");
+    return toastErr("Complete all required fields, choose majors from the list, sign, and acknowledge.");
   }
   if(!/^[a-z0-9._%+-]+@highpoint\.edu$/i.test(payload.email)) return toastErr("Use your @highpoint.edu address.");
-
   try{
     await fetch(GAS_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
     toastOk("Saved. You’ll receive role + group after all senators submit.");
     form.reset(); tags=[]; renderTags(); emailSelect.value="";
-  }catch(ex){
-    console.error(ex); toastErr("Couldn’t submit. Check connection and try again.");
-  }
+  }catch(ex){ console.error(ex); toastErr("Couldn’t submit. Check connection and try again."); }
 });
 function val(id){ return (document.getElementById(id).value||"").trim(); }
 function toastOk(t){ ok.textContent=t; ok.classList.remove('hide'); }
 function toastErr(t){ er.textContent=t; er.classList.remove('hide'); }
+
+/* Parallax reveal */
+const card=document.querySelector('.card'); const iobs=new IntersectionObserver(([e])=>{ if(e.isIntersecting) card.classList.add('on'); },{threshold:.2}); iobs.observe(card);
 </script>
 </body>
 </html>
