@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no"/>
 <title>HPU SGA — Senators Intake</title>
 <meta name="color-scheme" content="light">
 <style>
@@ -13,7 +13,7 @@
     --radius:18px;
   }
   *{box-sizing:border-box}
-  html,body{height:100%; max-width:100%; overflow-x:hidden;} /* FIX: hard lock horizontal scroll */
+  html,body{height:100%; max-width:100%; overflow-x:hidden; -webkit-text-size-adjust:100%;}
   body{
     margin:0; color:var(--ink);
     font-family: Inter, ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -25,33 +25,27 @@
 
   /* HERO */
   .hero-wrap{position:relative; overflow:hidden; padding-top:calc(14px + env(safe-area-inset-top));}
-  .band{
-    position:absolute; inset:0 0 auto 0; height:300px; /* FIX: taller so chip never hides */
+  .band{position:absolute; inset:0 0 auto 0; height:300px;
     background:linear-gradient(180deg,#5A2BC4 0%,#4D1EAC 55%,#330072 100%);
-    clip-path: ellipse(120% 72% at 50% 0%); transform:translateZ(0); z-index:0;
-  }
+    clip-path: ellipse(120% 72% at 50% 0%); transform:translateZ(0); z-index:0;}
   .spark{position:absolute; width:320px; height:320px; border-radius:50%;
     background: radial-gradient(closest-side, rgba(255,239,172,.75), rgba(255,239,172,0));
-    filter: blur(8px); opacity:.35; pointer-events:none; z-index:0;
-  }
+    filter: blur(8px); opacity:.35; pointer-events:none; z-index:0;}
   .spark.s1{top:-40px; left:8%} .spark.s2{top:-60px; right:6%}
-  .hero{
-    max-width:1040px; margin:0 auto; padding:38px 22px 52px; /* FIX: more bottom pad */
-    display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-  }
-  .brand{position:relative; z-index:2; color:#fff; letter-spacing:.2px; font-weight:900; font-size:clamp(20px,2.2vw,26px); text-shadow:0 2px 10px rgba(0,0,0,.25);} /* FIX: readable */
+  .hero{max-width:1040px; margin:0 auto; padding:38px 22px 52px;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:12px;}
+  .brand{position:relative; z-index:2; color:#fff; letter-spacing:.2px; font-weight:900;
+    font-size:clamp(20px,2.2vw,26px); text-shadow:0 2px 10px rgba(0,0,0,.25);}
   .chip{position:relative; z-index:2; display:inline-flex; gap:8px; align-items:center;
     padding:8px 12px; background:#ffffff22; color:#FFF; border:1px solid #ffffff55; border-radius:999px;
-    font-weight:800; font-size:12px; backdrop-filter: blur(6px); text-shadow:0 2px 8px rgba(0,0,0,.25);} /* FIX: stronger contrast */
+    font-weight:800; font-size:12px; backdrop-filter: blur(6px); text-shadow:0 2px 8px rgba(0,0,0,.25);}
   .gold{color:#FFE9B0}
 
-  /* SHELL */
+  /* FORM SHELL */
   .wrap{max-width:1040px; margin:0 auto; padding:0 22px 80px; position:relative; z-index:1; overflow-x:clip;}
-  .card{
-    background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:22px; margin-top:-40px; /* FIX: was -64; leaves chip fully visible */
-    transform:translateY(18px); opacity:0; transition:transform .7s cubic-bezier(.2,.6,.2,1), opacity .7s;
-  }
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:22px; margin-top:-40px; transform:translateY(18px); opacity:0;
+    transition:transform .7s cubic-bezier(.2,.6,.2,1), opacity .7s;}
   .card.on{transform:none; opacity:1}
 
   h2{margin:8px 0 10px; color:var(--purple); font-size:clamp(15px,1.6vw,16px); letter-spacing:.2px}
@@ -65,62 +59,58 @@
     .card{padding:18px}
   }
 
+  /* Inputs – keep font-size >= 16 to prevent iOS zoom */
   label{display:block; font-size:12px; font-weight:800; color:#413a6b; margin:4px 0 6px 2px; letter-spacing:.15px}
   input,select{
     width:100%; background:#fff; color:var(--ink);
-    border:1px solid var(--line); border-radius:12px; padding:12px 14px; outline:none;
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px; /* bigger */
+    outline:none; font-size:16px; /* anti-zoom */
     transition:border .12s, box-shadow .12s, transform .06s, background .2s;
     box-shadow:0 2px 6px rgba(17,16,36,.06);
   }
   input:focus,select:focus{border-color:#BFA6FF; box-shadow:0 6px 18px rgba(51,0,114,.15), 0 0 0 5px var(--focus)}
   select{background-image:linear-gradient(to bottom right,#faf9ff,#fff)}
-  .muted{color:#746f9a; font-size:12px}
 
-  /* TAGBOX */
+  .muted{color:#746f9a; font-size:12px}
+  .sb{margin-bottom:22px}
+
+  /* Tagbox */
   .tagbox{display:flex; flex-wrap:wrap; gap:10px; padding:10px; min-height:56px; background:#FBFAFF; border:1px solid var(--line); border-radius:12px}
-  .tag{
-    position:relative; display:inline-flex; align-items:center;
+  .tag{position:relative; display:inline-flex; align-items:center;
     background:linear-gradient(180deg,#F3EEFF,#E8E0FF);
     border:1px solid #D7CBFE; color:#2E1B6B;
-    padding:10px 34px 10px 14px; border-radius:999px; font-size:13px; font-weight:800;
-    box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(50,30,120,.12);
-  }
-  .tag button{
-    position:absolute; right:8px; top:50%; transform:translateY(-50%); /* FIX: tidy “×” */
-    width:18px; height:18px; border-radius:50%; border:0; cursor:pointer;
-    color:#fff; background:#6a54cc; box-shadow:0 1px 0 #4d3bb0;
-    font-weight:900; line-height:18px; padding:0;
-  }
-  .taginput{flex:1; min-width:200px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none}
+    padding:10px 38px 10px 14px; border-radius:999px; font-size:13px; font-weight:800;
+    box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(50,30,120,.12);}
+  .tag button{position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    width:20px; height:20px; border-radius:50%; border:0; cursor:pointer; color:#fff;
+    background:#6a54cc; box-shadow:0 1px 0 #4d3bb0; font-weight:900; line-height:20px; padding:0;}
 
-  /* RANKER */
-  .rank{display:grid; gap:12px; margin-top:4px}
-  .item{
-    display:flex; align-items:center; justify-content:space-between;
+  .taginput{flex:1; min-width:200px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none; font-size:16px}
+
+  /* Ranker */
+  .rank{display:grid; gap:12px; margin-top:4px; touch-action:manipulation;} /* prevent scroll-capture */
+  .item{display:flex; align-items:center; justify-content:space-between;
     background:#FFFFFF; border:1px dashed #D7D1EE; padding:14px 14px; border-radius:12px;
-    cursor:grab; transition:transform .12s, box-shadow .12s; box-shadow:0 1px 5px rgba(17,16,36,.04)
-  }
+    cursor:grab; transition:transform .12s, box-shadow .12s; box-shadow:0 1px 5px rgba(17,16,36,.04)}
   .item:hover{box-shadow:0 10px 22px rgba(51,0,114,.08)}
   .item:active{transform:scale(.996)}
   .drag{font-size:12px; font-weight:900; color:#6a54cc; background:#F0ECFF; border:1px solid #dcd4ff; padding:6px 10px; border-radius:999px}
 
-  /* BUTTONS + TOASTS */
+  /* Buttons / toasts */
   .actions{display:flex; justify-content:flex-end; margin-top:12px}
   button{
     appearance:none; border:0; cursor:pointer; border-radius:14px;
     background:linear-gradient(135deg,#6A35E8,#4D1EAC); color:white; font-weight:900; letter-spacing:.2px; padding:13px 18px;
-    box-shadow:0 12px 30px rgba(51,0,114,.28); transition:transform .06s, filter .2s;
+    box-shadow:0 12px 30px rgba(51,0,114,.28); transition:transform .06s, filter .2s; font-size:16px;
   }
   button:hover{filter:brightness(1.05) saturate(1.08)} button:active{transform:translateY(1px)}
   .pill{display:inline-flex; gap:8px; align-items:center; padding:8px 10px; border-radius:999px; font-size:12px; font-weight:800}
   .ok{background:#F0FFF6; border:1px solid #9BE5C6; color:#0E6D4D} .err{background:#FFF4F4; border:1px solid #F3B5B5; color:#9E2E2E}
   .hide{display:none!important}
 
-  /* REVEAL */
+  /* Reveal */
   .reveal{transform:translateY(10px); opacity:0; transition:transform .7s, opacity .7s}
   .reveal.on{transform:none; opacity:1}
-
-  .sb{margin-bottom:22px}
 </style>
 </head>
 <body>
@@ -189,10 +179,11 @@
             <div class="muted" style="margin-top:8px"><b>I acknowledge</b> that unexcused absences carry consequences; repeated excuses — even when emailed — may also escalate.</div>
           </div>
         </div>
-        <!-- FIX: checkbox row padded & inside white card area on mobile -->
-        <div style="display:flex; align-items:center; gap:10px; margin-top:10px; padding-right:12px">
-          <input id="ack" type="checkbox" required>
-          <label for="ack" class="muted" style="margin:0;">I’ve read and accept the policy above.</label>
+
+        <!-- checkbox row: pinned inside the card & full width on mobile -->
+        <div style="display:flex; align-items:flex-start; gap:10px; margin-top:12px; padding-right:0; flex-wrap:wrap">
+          <input id="ack" type="checkbox" required style="width:22px;height:22px; flex:0 0 auto;">
+          <label for="ack" class="muted" style="margin:0; flex:1 1 300px;">I’ve read and accept the policy above.</label>
         </div>
       </section>
 
@@ -231,11 +222,11 @@
       <section style="margin-top:12px">
         <h2>Rank event lanes (drag → top is #1)</h2>
         <div id="rank" class="rank reveal">
-          <div class="item" draggable="true"><div>Social & Experiences</div><span class="drag">Drag</span></div>
-          <div class="item" draggable="true"><div>Wellness & Growth</div><span class="drag">Drag</span></div>
-          <div class="item" draggable="true"><div>Service & Philanthropy</div><span class="drag">Drag</span></div>
-          <div class="item" draggable="true"><div>Academic & Career</div><span class="drag">Drag</span></div>
-          <div class="item" draggable="true"><div>Culture & Traditions</div><span class="drag">Drag</span></div>
+          <div class="item" data-id="Social & Experiences"><div>Social & Experiences</div><span class="drag">Drag</span></div>
+          <div class="item" data-id="Wellness & Growth"><div>Wellness & Growth</div><span class="drag">Drag</span></div>
+          <div class="item" data-id="Service & Philanthropy"><div>Service & Philanthropy</div><span class="drag">Drag</span></div>
+          <div class="item" data-id="Academic & Career"><div>Academic & Career</div><span class="drag">Drag</span></div>
+          <div class="item" data-id="Culture & Traditions"><div>Culture & Traditions</div><span class="drag">Drag</span></div>
         </div>
       </section>
 
@@ -265,12 +256,77 @@ const SENATORS = [
   ["Toni VanScott","tvanscot@highpoint.edu"],["Lelia Porter","lporter2@highpoint.edu"]
 ];
 
-/* HPU programs (whitelist) — abbreviated list shown earlier */
-const MAJORS = [/* … keep your full list from last version … */];
+/* === HPU programs (PASTE YOUR FULL LIST BELOW) ===========================
+   Tip: paste the exact titles (with BA/BS/Minor/etc.) and the normalizer
+   will strip degree tags so pills show as clean names.
+======================================================================== */
+const RAW_PROGRAMS = [
+  // Business
+  "Accounting","Accounting Minor","Actuarial Science","Business Administration",
+  "Business Administration Minor","Business Analytics & Economics","Economics Minor",
+  "Entrepreneurship","Entrepreneurship Minor","Finance","Finance Minor",
+  "Healthcare Management","Healthcare Management Minor","Hospitality Management",
+  "Hospitality Management Minor","International Business","Marketing","Marketing Minor",
+  "Sales","Sales Minor","Global Commerce Minor","Operations & Supply Chain Management Minor",
+  "Event Management","Event Management Minor","Fashion Merchandising","Fashion Merchandising Minor",
+  "Furnishings Minor","Sports Management","Sports Management Minor","Sports Media","Sports Media Minor",
 
-/* Parallax (kept) */
+  // STEM
+  "Biochemistry","Biology","Biology Minor","Chemistry","Chemistry Minor",
+  "Computer Engineering","Computer Science","Computer Science Minor",
+  "Cybersecurity","Data Analytics & Statistics","Data Analytics Minor",
+  "Data Science","Data Science Minor","Electrical Engineering","Exercise Science",
+  "Mathematical Economics","Mathematics","Mathematics Minor","Mechanical Engineering",
+  "Mechatronics","Neuroscience","Neuroscience Minor","Physics","Physics Minor","Statistics Minor",
+
+  // Arts, Media, & Communication
+  "Advertising, Public Relations, and Strategic Communication",
+  "Art History Minor","Creative Writing Minor","Graphic Design Minor",
+  "Journalism","Journalism Minor","Media Production","Media Production Minor",
+  "Photography Minor","Public & Professional Writing Minor","Social Media and Digital Communication",
+  "Social Media and Digital Communication Minor","Studio Art","Studio Art Minor",
+  "Studio Art — General Fine Arts (BFA)","Studio Art — Graphic Design (BFA)",
+  "Theater","Theater Minor",
+
+  // Humanities & Social Sciences
+  "Chinese Minor","Criminal Justice","Criminal Justice Minor","East Asian Studies Minor",
+  "Education Studies Minor","English","French & Francophone Studies",
+  "French & Francophone Studies Minor","History","History Minor",
+  "International Relations","Italian Studies Minor","Jewish Studies Minor",
+  "Leadership Studies Minor","Legal Studies Minor","Literature Minor",
+  "Philosophy","Philosophy Minor","Political Science","Political Science Minor",
+  "Popular Culture Studies Minor","Religion","Religion Minor","Sociology & Anthropology",
+  "Sociology & Anthropology Minor","Spanish","Spanish Minor","Social Innovation Minor",
+  "Women’s Leadership Development Minor",
+
+  // Health, Education & Wellness
+  "Athletic Coaching Minor","Elementary Education","Health and Physical Education",
+  "Health and Wellness","Health Education Minor","Pre-Dental Program",
+  "Pre-Nursing Program","Pre-Pharmacy Program",
+
+  // Design & Interiors
+  "Design Studies — Graphic Design (BA)","Interior Design","Visual Merchandising Design Minor"
+];
+
+const MAJORS = RAW_PROGRAMS
+  .map(t => String(t)
+    .replace(/\s*\((?:B\.?A\.?|B\.?S\.?|B\.?F\.?A\.?|M\.?B\.?A\.?|M\.?Ed\.?|J\.?D\.?|DPT|PharmD|DMSc|MPAS|MSAT|BMS)\)\s*/gi,'')
+    .replace(/\s*Minor$/i,'')
+    .replace(/\s*Program$/i,'')
+    .replace(/\s*with a Concentration.*$/i,'')
+    .replace(/\s*&/g,' & ')
+    .replace(/\s{2,}/g,' ')
+    .trim()
+  ))
+  .filter((v,i,arr)=> v && arr.indexOf(v)===i)   // unique
+  .sort((a,b)=>a.localeCompare(b));
+
+/* Parallax: keep desktop; soften on mobile for stability */
 const band=document.getElementById('band'), s1=document.getElementById('s1'), s2=document.getElementById('s2');
-window.addEventListener('scroll',()=>{ const y=window.scrollY||0; band.style.transform=`translateY(${y*.25}px)`; s1.style.transform=`translateY(${y*.18}px)`; s2.style.transform=`translateY(${y*.12}px)`;});
+const isMobile = window.matchMedia("(max-width: 800px)").matches;
+if(!isMobile){
+  window.addEventListener('scroll',()=>{ const y=window.scrollY||0; band.style.transform=`translateY(${y*.25}px)`; s1.style.transform=`translateY(${y*.18}px)`; s2.style.transform=`translateY(${y*.12}px)`;});
+}
 
 /* Reveal */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.15});
@@ -295,29 +351,66 @@ function renderTags(){
   });
 }
 taginput.setAttribute('list','majors');
-const dl=document.createElement('datalist'); dl.id='majors'; MAJORS.forEach(m=>{const o=document.createElement('option'); o.value=m; dl.appendChild(o)}); document.body.appendChild(dl);
-function addMajor(val){ const v=(val||"").trim(); if(!v) return;
+const dl=document.createElement('datalist'); dl.id='majors';
+MAJORS.forEach(m=>{const o=document.createElement('option'); o.value=m; dl.appendChild(o)});
+document.body.appendChild(dl);
+
+function addMajor(val){
+  const v=(val||"").trim(); if(!v) return;
   if(!MAJORS.includes(v)){ toastErr("Choose from the HPU list."); taginput.value=""; return; }
   if(!tags.includes(v)) tags.push(v); taginput.value=""; renderTags();
 }
-taginput.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===','){ e.preventDefault(); addMajor(taginput.value.replace(',','')); }});
+taginput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===','){ e.preventDefault(); addMajor(taginput.value.replace(',','')); }
+});
 taginput.addEventListener('blur',()=>addMajor(taginput.value));
 
-/* Ranker */
-const rank=document.getElementById('rank'); let dragEl=null;
-rank.querySelectorAll('.item').forEach(i=>{
-  i.addEventListener('dragstart',()=>{ dragEl=i; i.style.opacity=.6; });
-  i.addEventListener('dragend',()=>{ dragEl=null; i.style.opacity=1; });
-  i.addEventListener('dragover',e=>{
-    e.preventDefault(); const t=e.currentTarget; if(t===dragEl) return;
-    const rect=t.getBoundingClientRect(); const before=(e.clientY-rect.top) < rect.height/2;
-    rank.insertBefore(dragEl, before?t:t.nextSibling);
-  });
-});
-function currentRanking(){ return Array.from(rank.querySelectorAll('.item')).map(i=>i.firstElementChild.textContent.trim()); }
+/* Ranker – touch + mouse (works on iOS/Android + desktop) */
+const rank = document.getElementById('rank');
+function currentRanking(){ return Array.from(rank.querySelectorAll('.item')).map(i=>i.dataset.id); }
+function bindDraggable(row){
+  let startY, placeholder, dragging=false, startIndex;
 
-/* FIX: remove auto scroll-on-focus so dropdowns don’t “jump” */
- // (intentionally empty)
+  function pointerDown(e){
+    const t = e.touches ? e.touches[0] : e;
+    startY = t.clientY; startIndex = [...rank.children].indexOf(row);
+    placeholder = document.createElement('div');
+    placeholder.className = 'item'; placeholder.style.visibility='hidden';
+    placeholder.style.height = `${row.offsetHeight}px`;
+    row.parentNode.insertBefore(placeholder, row.nextSibling);
+    row.style.position='absolute'; row.style.zIndex=10; row.style.width=`${row.offsetWidth}px`;
+    row.style.pointerEvents='none'; dragging=true;
+    move(t.clientY);
+    e.preventDefault();
+  }
+  function pointerMove(e){
+    if(!dragging) return;
+    const t = e.touches ? e.touches[0] : e;
+    move(t.clientY);
+    // find spot
+    const items = [...rank.querySelectorAll('.item')].filter(i=>i!==row);
+    for(const it of items){
+      const r = it.getBoundingClientRect();
+      if(t.clientY < r.top + r.height/2){ rank.insertBefore(placeholder, it); break; }
+      if(it===items[items.length-1]) rank.appendChild(placeholder);
+    }
+    e.preventDefault();
+  }
+  function move(y){ row.style.transform=`translateY(${y-startY}px)`; }
+  function pointerUp(){
+    if(!dragging) return;
+    dragging=false; row.style.position=''; row.style.width=''; row.style.zIndex='';
+    row.style.pointerEvents=''; row.style.transform='';
+    rank.insertBefore(row, placeholder); placeholder.remove();
+  }
+  row.addEventListener('touchstart',pointerDown,{passive:false});
+  row.addEventListener('touchmove',pointerMove,{passive:false});
+  row.addEventListener('touchend',pointerUp);
+  row.addEventListener('mousedown',pointerDown);
+  window.addEventListener('mousemove',pointerMove);
+  window.addEventListener('mouseup',pointerUp);
+}
+rank.querySelectorAll('.item').forEach(bindDraggable);
 
 /* Submit */
 const form=document.getElementById('form'); const ok=document.getElementById('msg'); const er=document.getElementById('err');
@@ -333,10 +426,12 @@ form.addEventListener('submit', async (e)=>{
     return toastErr("Complete all required fields, choose majors from the list, sign, and acknowledge.");
   }
   if(!/^[a-z0-9._%+-]+@highpoint\.edu$/i.test(payload.email)) return toastErr("Use your @highpoint.edu address.");
+
   try{
     await fetch(GAS_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
     toastOk("Saved. You’ll receive role + group after all senators submit.");
     form.reset(); tags=[]; renderTags(); emailSelect.value="";
+    window.scrollTo({top:0,behavior:'smooth'});
   }catch(ex){ console.error(ex); toastErr("Couldn’t submit. Check connection and try again."); }
 });
 function val(id){ return (document.getElementById(id).value||"").trim(); }
@@ -344,7 +439,9 @@ function toastOk(t){ ok.textContent=t; ok.classList.remove('hide'); }
 function toastErr(t){ er.textContent=t; er.classList.remove('hide'); }
 
 /* Card reveal */
-const card=document.querySelector('.card'); const iobs=new IntersectionObserver(([e])=>{ if(e.isIntersecting) card.classList.add('on'); },{threshold:.2}); iobs.observe(card);
+const card=document.querySelector('.card');
+const iobs=new IntersectionObserver(([e])=>{ if(e.isIntersecting) card.classList.add('on'); },{threshold:.2});
+iobs.observe(card);
 </script>
 </body>
 </html>
