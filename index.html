@@ -49,8 +49,6 @@
   .card.on{transform:none; opacity:1}
 
   h2{margin:8px 0 10px; color:var(--purple); font-size:clamp(15px,1.6vw,16px); letter-spacing:.2px}
-  p.note{margin:2px 0 10px; color:#5b5675; font-size:13px}
-
   .grid{display:grid; gap:14px}
   .cols-2{grid-template-columns:1fr 1fr}
   @media (max-width:800px){
@@ -63,14 +61,13 @@
   label{display:block; font-size:12px; font-weight:800; color:#413a6b; margin:4px 0 6px 2px; letter-spacing:.15px}
   input,select{
     width:100%; background:#fff; color:var(--ink);
-    border:1px solid var(--line); border-radius:12px; padding:14px 16px; /* bigger */
-    outline:none; font-size:16px; /* anti-zoom */
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+    outline:none; font-size:16px;
     transition:border .12s, box-shadow .12s, transform .06s, background .2s;
     box-shadow:0 2px 6px rgba(17,16,36,.06);
   }
   input:focus,select:focus{border-color:#BFA6FF; box-shadow:0 6px 18px rgba(51,0,114,.15), 0 0 0 5px var(--focus)}
   select{background-image:linear-gradient(to bottom right,#faf9ff,#fff)}
-
   .muted{color:#746f9a; font-size:12px}
   .sb{margin-bottom:22px}
 
@@ -88,7 +85,7 @@
   .taginput{flex:1; min-width:200px; background:transparent; border:0; color:#2a2551; padding:8px 8px; outline:none; font-size:16px}
 
   /* Ranker */
-  .rank{display:grid; gap:12px; margin-top:4px; touch-action:manipulation;} /* prevent scroll-capture */
+  .rank{display:grid; gap:12px; margin-top:4px; touch-action:manipulation;}
   .item{display:flex; align-items:center; justify-content:space-between;
     background:#FFFFFF; border:1px dashed #D7D1EE; padding:14px 14px; border-radius:12px;
     cursor:grab; transition:transform .12s, box-shadow .12s; box-shadow:0 1px 5px rgba(17,16,36,.04)}
@@ -142,12 +139,7 @@
           </div>
           <div class="sb">
             <label>Dream Job (1–2 words) *</label>
-            <input id="dream" required list="dreams" placeholder="Lawyer, Doctor, Teacher, Engineer, Nurse, Analyst, Architect, Marketer, Journalist, Designer">
-            <datalist id="dreams">
-              <option>Lawyer</option><option>Doctor</option><option>Teacher</option><option>Engineer</option>
-              <option>Software</option><option>Nurse</option><option>Analyst</option><option>Architect</option>
-              <option>Marketer</option><option>Journalist</option><option>Designer</option>
-            </datalist>
+            <input id="dream" required placeholder="e.g., Lawyer • Engineer • Teacher">
           </div>
         </div>
 
@@ -180,7 +172,6 @@
           </div>
         </div>
 
-        <!-- checkbox row: pinned inside the card & full width on mobile -->
         <div style="display:flex; align-items:flex-start; gap:10px; margin-top:12px; padding-right:0; flex-wrap:wrap">
           <input id="ack" type="checkbox" required style="width:22px;height:22px; flex:0 0 auto;">
           <label for="ack" class="muted" style="margin:0; flex:1 1 300px;">I’ve read and accept the policy above.</label>
@@ -257,12 +248,8 @@ const SENATORS = [
   ["Toni VanScott","tvanscot@highpoint.edu"],["Lelia Porter","lporter2@highpoint.edu"]
 ];
 
-/* === HPU programs (PASTE YOUR FULL LIST BELOW) ===========================
-   Tip: paste the exact titles (with BA/BS/Minor/etc.) and the normalizer
-   will strip degree tags so pills show as clean names.
-======================================================================== */
+/* PROGRAM WHITELIST (degree tags stripped; duplicates removed) */
 const RAW_PROGRAMS = [
-  // Business
   "Accounting","Accounting Minor","Actuarial Science","Business Administration",
   "Business Administration Minor","Business Analytics & Economics","Economics Minor",
   "Entrepreneurship","Entrepreneurship Minor","Finance","Finance Minor",
@@ -271,25 +258,18 @@ const RAW_PROGRAMS = [
   "Sales","Sales Minor","Global Commerce Minor","Operations & Supply Chain Management Minor",
   "Event Management","Event Management Minor","Fashion Merchandising","Fashion Merchandising Minor",
   "Furnishings Minor","Sports Management","Sports Management Minor","Sports Media","Sports Media Minor",
-
-  // STEM
   "Biochemistry","Biology","Biology Minor","Chemistry","Chemistry Minor",
   "Computer Engineering","Computer Science","Computer Science Minor",
   "Cybersecurity","Data Analytics & Statistics","Data Analytics Minor",
   "Data Science","Data Science Minor","Electrical Engineering","Exercise Science",
   "Mathematical Economics","Mathematics","Mathematics Minor","Mechanical Engineering",
   "Mechatronics","Neuroscience","Neuroscience Minor","Physics","Physics Minor","Statistics Minor",
-
-  // Arts, Media, & Communication
   "Advertising, Public Relations, and Strategic Communication",
   "Art History Minor","Creative Writing Minor","Graphic Design Minor",
   "Journalism","Journalism Minor","Media Production","Media Production Minor",
   "Photography Minor","Public & Professional Writing Minor","Social Media and Digital Communication",
   "Social Media and Digital Communication Minor","Studio Art","Studio Art Minor",
-  "Studio Art — General Fine Arts (BFA)","Studio Art — Graphic Design (BFA)",
-  "Theater","Theater Minor",
-
-  // Humanities & Social Sciences
+  "Studio Art — General Fine Arts (BFA)","Studio Art — Graphic Design (BFA)","Theater","Theater Minor",
   "Chinese Minor","Criminal Justice","Criminal Justice Minor","East Asian Studies Minor",
   "Education Studies Minor","English","French & Francophone Studies",
   "French & Francophone Studies Minor","History","History Minor",
@@ -299,13 +279,9 @@ const RAW_PROGRAMS = [
   "Popular Culture Studies Minor","Religion","Religion Minor","Sociology & Anthropology",
   "Sociology & Anthropology Minor","Spanish","Spanish Minor","Social Innovation Minor",
   "Women’s Leadership Development Minor",
-
-  // Health, Education & Wellness
   "Athletic Coaching Minor","Elementary Education","Health and Physical Education",
   "Health and Wellness","Health Education Minor","Pre-Dental Program",
   "Pre-Nursing Program","Pre-Pharmacy Program",
-
-  // Design & Interiors
   "Design Studies — Graphic Design (BA)","Interior Design","Visual Merchandising Design Minor"
 ];
 
@@ -319,19 +295,17 @@ const MAJORS = RAW_PROGRAMS
     .replace(/\s{2,}/g,' ')
     .trim()
   ))
-  .filter((v,i,arr)=> v && arr.indexOf(v)===i)   // unique
+  .filter((v,i,arr)=> v && arr.indexOf(v)===i)
   .sort((a,b)=>a.localeCompare(b));
 
-/* Parallax: keep desktop; soften on mobile for stability */
+/* Parallax (desktop only) */
 const band=document.getElementById('band'), s1=document.getElementById('s1'), s2=document.getElementById('s2');
-const isMobile = window.matchMedia("(max-width: 800px)").matches;
-if(!isMobile){
+if(window.matchMedia("(min-width: 801px)").matches){
   window.addEventListener('scroll',()=>{ const y=window.scrollY||0; band.style.transform=`translateY(${y*.25}px)`; s1.style.transform=`translateY(${y*.18}px)`; s2.style.transform=`translateY(${y*.12}px)`;});
 }
 
-/* Reveal */
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.15});
-document.querySelectorAll('.reveal,.card').forEach(el=>io.observe(el));
+/* Ensure card reveals */
+document.querySelectorAll('.reveal,.card').forEach(el=>el.classList.add('on'));
 
 /* Email dropdown */
 const emailSelect=document.getElementById('emailSelect');
@@ -366,29 +340,30 @@ taginput.addEventListener('keydown',e=>{
 });
 taginput.addEventListener('blur',()=>addMajor(taginput.value));
 
-/* Ranker – touch + mouse (works on iOS/Android + desktop) */
+/* Ranker – touch + mouse */
 const rank = document.getElementById('rank');
 function currentRanking(){ return Array.from(rank.querySelectorAll('.item')).map(i=>i.dataset.id); }
 function bindDraggable(row){
-  let startY, placeholder, dragging=false, startIndex;
+  let startY, startX, startTop, placeholder, dragging=false;
 
   function pointerDown(e){
     const t = e.touches ? e.touches[0] : e;
-    startY = t.clientY; startIndex = [...rank.children].indexOf(row);
+    startY = t.clientY; startX = t.clientX;
+    startTop = row.getBoundingClientRect().top + window.scrollY;
     placeholder = document.createElement('div');
     placeholder.className = 'item'; placeholder.style.visibility='hidden';
     placeholder.style.height = `${row.offsetHeight}px`;
-    row.parentNode.insertBefore(placeholder, row.nextSibling);
-    row.style.position='absolute'; row.style.zIndex=10; row.style.width=`${row.offsetWidth}px`;
-    row.style.pointerEvents='none'; dragging=true;
-    move(t.clientY);
-    e.preventDefault();
+    rank.insertBefore(placeholder, row.nextSibling);
+    row.style.position='absolute'; row.style.left = `${row.getBoundingClientRect().left}px`;
+    row.style.top = `${startTop}px`; row.style.width=`${row.offsetWidth}px`;
+    row.style.zIndex=10; row.style.pointerEvents='none';
+    dragging=true; e.preventDefault();
   }
   function pointerMove(e){
     if(!dragging) return;
     const t = e.touches ? e.touches[0] : e;
-    move(t.clientY);
-    // find spot
+    const dy = t.clientY - startY;
+    row.style.top = `${startTop + dy}px`;
     const items = [...rank.querySelectorAll('.item')].filter(i=>i!==row);
     for(const it of items){
       const r = it.getBoundingClientRect();
@@ -397,11 +372,10 @@ function bindDraggable(row){
     }
     e.preventDefault();
   }
-  function move(y){ row.style.transform=`translateY(${y-startY}px)`; }
   function pointerUp(){
     if(!dragging) return;
-    dragging=false; row.style.position=''; row.style.width=''; row.style.zIndex='';
-    row.style.pointerEvents=''; row.style.transform='';
+    dragging=false;
+    row.style.position=''; row.style.left=''; row.style.top=''; row.style.width=''; row.style.zIndex=''; row.style.pointerEvents='';
     rank.insertBefore(row, placeholder); placeholder.remove();
   }
   row.addEventListener('touchstart',pointerDown,{passive:false});
@@ -438,21 +412,7 @@ form.addEventListener('submit', async (e)=>{
 function val(id){ return (document.getElementById(id).value||"").trim(); }
 function toastOk(t){ ok.textContent=t; ok.classList.remove('hide'); }
 function toastErr(t){ er.textContent=t; er.classList.remove('hide'); }
-
-/* Card reveal (safe) */
-const card = document.querySelector('.card');
-if (card) {
-  // ensure it's visible even if IO or any earlier code fails
-  card.classList.add('on');
-  if ('IntersectionObserver' in window) {
-    const iobs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) card.classList.add('on'); },
-      { threshold: .2 }
-    );
-    iobs.observe(card);
-  }
-}
-}); // end DOMContentLoaded
+}); // DOMContentLoaded
 </script>
 </body>
 </html>
