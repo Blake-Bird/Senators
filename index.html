@@ -126,7 +126,7 @@
   </div>
 
   <div class="wrap">
-    <form id="form" class="card reveal" novalidate>
+    <form id="form" class="card reveal on" novalidate>
       <!-- BASICS -->
       <section>
         <h2>Basics</h2>
@@ -238,6 +238,7 @@
   </div>
 
 <script>
+window.addEventListener('DOMContentLoaded', function () {
 /* ===== CONFIG ===== */
 const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyzhuR8x6sYtD8cg2Ny27aorEyXCqm49BnPqKPQ8BVd2FTfKu6dF_9njNCDLY01nS26dQ/exec";
 
@@ -438,10 +439,20 @@ function val(id){ return (document.getElementById(id).value||"").trim(); }
 function toastOk(t){ ok.textContent=t; ok.classList.remove('hide'); }
 function toastErr(t){ er.textContent=t; er.classList.remove('hide'); }
 
-/* Card reveal */
-const card=document.querySelector('.card');
-const iobs=new IntersectionObserver(([e])=>{ if(e.isIntersecting) card.classList.add('on'); },{threshold:.2});
-iobs.observe(card);
+/* Card reveal (safe) */
+const card = document.querySelector('.card');
+if (card) {
+  // ensure it's visible even if IO or any earlier code fails
+  card.classList.add('on');
+  if ('IntersectionObserver' in window) {
+    const iobs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) card.classList.add('on'); },
+      { threshold: .2 }
+    );
+    iobs.observe(card);
+  }
+}
+}); // end DOMContentLoaded
 </script>
 </body>
 </html>
